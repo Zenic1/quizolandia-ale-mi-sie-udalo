@@ -1,5 +1,5 @@
 
-.form {
+#register {
     --input-focus: #344E41;
     --font-color: #323232;
     --font-color-sub: #666;
@@ -18,7 +18,7 @@
     margin-right: 30vw;
     padding-left: 5vw;
     box-shadow: 4px 4px var(--main-color);
-    height: 60vh;
+    height: 70vh;
   }
   
   .title {
@@ -97,6 +97,7 @@
     padding: 0;
     margin-top: 15vh;
     font-family: sans-serif;
+    overflow-x: hidden;
     
   }
   .baner{
