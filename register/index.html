@@ -1,27 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document</title>
+  <link rel="stylesheet" href="register.css" />
 </head>
 <body>
-    <div class="baner"><h1>Quizolandia - Rejestracja</h1>
+  <div class="baner">
+    <h1>Quizolandia</h1>
+  </div>
+
+  <form action="main.html" id="register">
+    <div class="title">
+      Welcome,<br />
+      <span>sign up to continue</span>
     </div>
-    <form class="form">
-        <div class="title">Welcome,<br><span>sign up to continue</span></div>
-        <input class="input" name="email" placeholder="Email" type="email">
-        <input class="input" name="password" placeholder="Password" type="password">
-        <div class="login-with">
-      
-           
-          </div>
-        </div>
-        <p class="registerp">Already have an account?  
-        <a href="login.html">log in here</a></p>
-        <div class="center">   <button class="button-confirm">Let`s go →</button></div>
-     
-      </form>
+
+    <input class="input" name="text" placeholder="Username" type="text" />
+    <input class="input" name="email" placeholder="Email" type="email" />
+    <input class="input" name="password" placeholder="Password" type="password" />
+    <input class="input" name="password2" placeholder="Confirm password" type="password" />
+
+    <div class="login-with"></div>
+
+    <p class="registerp">
+      Already have an account?
+      <a href="login.html">log in here</a>
+    </p>
+
+    <div class="center">
+      <button class="button-confirm" type="submit">Let's go →</button>
+    </div>
+  </form>
+
+  <script>
+  
+    window.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('register'); 
+
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const pass1 = form.elements['password'].value;
+        const pass2 = form.elements['password2'].value;
+
+        if (pass1 !== pass2) {
+          alert("Hasła się nie zgadzają!");
+        }else{
+          form.submit(); 
+          // albo: window.location.href = "main.html";
+        }
+      });
+    });
+  </script>
 </body>
 </html>
