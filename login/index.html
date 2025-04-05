@@ -1,27 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Logowanie | Quizolandia</title>
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/login-register.css">
 </head>
 <body>
-    <div class="baner"><h1>Quizolandia - Login</h1>
-    </div>
-    <form class="form">
-        <div class="title">Welcome,<br><span>log in to continue</span></div>
-        <input class="input" name="email" placeholder="Email" type="email">
-        <input class="input" name="password" placeholder="Password" type="password">
-        <div class="login-with">
-      
-           
-          </div>
+<header>
+    <h1>Quizolandia</h1>
+</header>
+
+<main>
+    <form action="../" id="login">
+        <h2>
+            Witaj,<br>
+            <span>Zaloguj się</span>
+        </h2>
+
+        <label for="email">Email</label>
+        <input id="email" name="email" placeholder="janek@knuruf.tech" type="email">
+
+        <label for="password">Hasło</label>
+        <input id="password" name="password" placeholder="********" type="password">
+
+        <p class="registerp">
+            Nie masz jeszcze konta?
+            <a href="../register">Zarejestruj się tutaj</a>
+        </p>
+
+        <div class="center">
+            <button class="button-confirm" type="submit">Zaloguj się →</button>
         </div>
-        <p class="registerp">Don't have an account yet? 
-        <a href="register.html">register here</a></p>
-        <div class="center">   <button class="button-confirm">Let`s go →</button></div>
-     
-      </form>
+    </form>
+</main>
 </body>
 </html>

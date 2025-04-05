@@ -1,58 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Document</title>
-  <link rel="stylesheet" href="register.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rejestracja | Quizolandia</title>
+  <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/login-register.css">
 </head>
 <body>
-  <div class="baner">
-    <h1>Quizolandia</h1>
+<header>
+  <h1>Quizolandia</h1>
+</header>
+
+<form action="../" id="register">
+  <h2>
+    Witaj,<br>
+    <span>Zarejestruj się</span>
+  </h2>
+
+  <label for="username">Nazwa Użytkownika</label>
+  <input id="username" name="text" placeholder="JanKowalski09" type="text">
+
+  <label for="email">Email</label>
+  <input id="email" name="email" placeholder="janek@knuruf.tech" type="email">
+
+  <label for="password">Hasło</label>
+  <input id="password" name="password" placeholder="********" type="password">
+
+  <label for="password2">Potwierdź Hasło</label>
+  <input id="password2" name="password2" placeholder="********" type="password">
+
+  <p class="registerp">
+    Masz już konto?
+    <a href="../login">Zaloguj się tutaj</a>
+  </p>
+
+  <div class="center">
+    <button class="button-confirm" type="submit">Rejestracja →</button>
   </div>
+</form>
 
-  <form action="main.html" id="register">
-    <div class="title">
-      Welcome,<br />
-      <span>sign up to continue</span>
-    </div>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('register');
 
-    <input class="input" name="text" placeholder="Username" type="text" />
-    <input class="input" name="email" placeholder="Email" type="email" />
-    <input class="input" name="password" placeholder="Password" type="password" />
-    <input class="input" name="password2" placeholder="Confirm password" type="password" />
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
 
-    <div class="login-with"></div>
+      const pass1 = form.elements['password'].value;
+      const pass2 = form.elements['password2'].value;
 
-    <p class="registerp">
-      Already have an account?
-      <a href="login.html">log in here</a>
-    </p>
-
-    <div class="center">
-      <button class="button-confirm" type="submit">Let's go →</button>
-    </div>
-  </form>
-
-  <script>
-  
-    window.addEventListener('DOMContentLoaded', () => {
-      const form = document.getElementById('register'); 
-
-      form.addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const pass1 = form.elements['password'].value;
-        const pass2 = form.elements['password2'].value;
-
-        if (pass1 !== pass2) {
-          alert("Hasła się nie zgadzają!");
-        }else{
-          form.submit(); 
-          // albo: window.location.href = "main.html";
-        }
-      });
+      if (pass1 !== pass2) {
+        alert("Hasła się nie zgadzają!");
+      } else {
+        form.submit();
+      }
     });
-  </script>
+  });
+</script>
 </body>
 </html>

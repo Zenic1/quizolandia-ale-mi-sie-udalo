@@ -1,0 +1,44 @@
+main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+.center {
+    flex: 1;
+}
+.right {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.answer-button.selected {
+    background-color: var(--second-bg-color);
+    color: var(--main-color);
+}
+
+.answer-button {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid var(--main-color);
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    cursor: pointer;
+}
+
+.answer-button:hover {
+    background-color: var(--header-color);
+}
+h2{
+    color: var(--font-color);
+    font-size: 1.8em;
+}
+.open-answer {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid var(--main-color);
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    width: 100%;
+}
