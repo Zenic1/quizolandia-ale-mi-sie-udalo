@@ -18,8 +18,8 @@ logger.info(``);
 const pool: Pool = createPool(dbConfig);
 
 async function executeQuery<T = any>(
-  query: string,
-  params?: Params
+    query: string,
+    params?: Params
 ): Promise<T> {
   const conn: PoolConnection = await pool.getConnection();
   try {
@@ -35,13 +35,13 @@ async function executeQuery<T = any>(
 }
 
 async function sendResponse(
-  ws: WebSocket,
-  variable: string,
-  value: any
+    ws: WebSocket,
+    variable: string,
+    value: any
 ): Promise<void> {
   try {
     ws.send(
-      standardizeData("response", { variable, value } as ResponsePayload)
+        standardizeData("response", { variable, value } as ResponsePayload)
     );
     logger.info(`Sending response completed successfully: `, {
       variable,
@@ -66,8 +66,8 @@ function standardizeData(action: ActionType, params: ResponsePayload): string {
 }
 
 async function handleMethod(
-  ws: WebSocket,
-  params: RequestPayload
+    ws: WebSocket,
+    params: RequestPayload
 ): Promise<void> {
   try {
     const [category, operation] = params.method.split(".");
@@ -76,7 +76,7 @@ async function handleMethod(
 
     const rawResult = await executeQuery(query, params.params);
 
-    if (params.responseVar) {
+    if (params.responseVar && params.responseVar !== "N/A") {
       await sendResponse(ws, params.responseVar, rawResult);
     }
   } catch (error) {
@@ -108,10 +108,10 @@ wss.on("connection", async (ws: WebSocket) => {
 });
 
 async function sendError(
-  ws: WebSocket,
-  code: number,
-  message: string,
-  details?: any
+    ws: WebSocket,
+    code: number,
+    message: string,
+    details?: any
 ): Promise<void> {
   await sendResponse(ws, "error", { code, message, details });
 }
