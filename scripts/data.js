@@ -13,10 +13,7 @@ function initializeWebSocket() {
         ws.close();
     };
 
-    ws.onopen = function () {
-        console.log("WebSocket opened");
-        initAllGetData()
-    };
+    ws.addEventListener('open', initAllGetData)
 
     ws.onmessage = function (event) {
         const response = JSON.parse(event.data);
@@ -40,7 +37,6 @@ function get(variable) {
 
 function request(method, params = {}, responseVar = "N/A") {
     if (ws.readyState !== WebSocket.OPEN) return;
-    const [sector, dataPool, operation] = method.split(".");
     ws.send(
         JSON.stringify({
             action: "request",
@@ -51,14 +47,15 @@ function request(method, params = {}, responseVar = "N/A") {
             },
         })
     );
-    if (operation !== "get") {
-        const getMethod = sector + "." + dataPool + ".get";
-        request(getMethod, {}, responseVar);
-    }
 }
 
-async function initAllGetData() {
+function initAllGetData() {
     request("user.get", {}, "studentList");
+    request("category.get", {}, "categories");
+    request("answer.get", {}, "answerList");
+    request("question.get", {}, "questionList");
+    request("quiz.getWithCategory", {}, "quizList");
+    request('comment.get', {}, "commentList");
 }
 
 let cachedData = new Map();

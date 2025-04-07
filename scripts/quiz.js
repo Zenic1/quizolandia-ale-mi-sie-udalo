@@ -1,121 +1,134 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const quizContainer = document.getElementById('quiz-container');
-    const nextButton = document.getElementById('next');
-    const hintButton = document.getElementById('hint');
-    let currentQuestionIndex = 0;
-    let quizData = [];
-    let selectedAnswers = [];
-    let correctAnswersCount = 0;
+﻿function createStarRating(rating) {
+    const container = document.createElement('div');
+    container.className = 'star-rating';
 
-    async function fetchQuizData() {
-        const queryResults = [
-            { question_id: 47, question_text: "Zaznacz czynniki przyrodnicze :", question_type: "multiple", answer_id: 1, answer_text: "klimat", is_correct: 1 },
-            { question_id: 47, question_text: "Zaznacz czynniki przyrodnicze :", question_type: "multiple", answer_id: 2, answer_text: "ukształtowanie terenu", is_correct: 1 },
-            { question_id: 47, question_text: "Zaznacz czynniki przyrodnicze :", question_type: "multiple", answer_id: 3, answer_text: "warunki wodne", is_correct: 1 },
-            { question_id: 47, question_text: "Zaznacz czynniki przyrodnicze :", question_type: "multiple", answer_id: 4, answer_text: "poziom kultury rolnej", is_correct: 0 },
-            { question_id: 48, question_text: "Żyzność gleby nie ma większego wpływu na rozwój roślin:", question_type: "single", answer_id: 5, answer_text: "prawda", is_correct: 0 },
-            { question_id: 48, question_text: "Żyzność gleby nie ma większego wpływu na rozwój roślin:", question_type: "single", answer_id: 6, answer_text: "fałsz", is_correct: 1 },
-            { question_id: 49, question_text: "Opisz wpływ klimatu na rolnictwo:", question_type: "open", answer_id: null, answer_text: "nie", is_correct: 1 }
-        ];
-
-        const quizData = [];
-        const questionsMap = new Map();
-
-        queryResults.forEach(row => {
-            if (!questionsMap.has(row.question_id)) {
-                questionsMap.set(row.question_id, {
-                    question: row.question_text,
-                    questionType: row.question_type,
-                    answers: [],
-                    correctAnswers: [],
-                    hint: ""
-                });
-            }
-            const question = questionsMap.get(row.question_id);
-            if (row.answer_text) {
-                question.answers.push({ text: row.answer_text, isCorrect: row.is_correct });
-                if (row.is_correct) {
-                    question.correctAnswers.push(question.answers.length - 1);
-                }
-            }
-        });
-
-        questionsMap.forEach(question => quizData.push(question));
-        return quizData;
+    for (let i = 0; i < 5; i++) {
+        const star = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        star.setAttribute('class', `star ${i < rating ? 'active' : ''}`);
+        star.setAttribute('viewBox', '0 0 24 24');
+        star.innerHTML = '<path d="M12 0l3.09 6.26L22 7.27l-5 4.87 1.18 6.88L12 16l-6.18 3.02L7 12.14 2 7.27l6.91-1.01L12 0z"/>';
+        container.appendChild(star);
     }
+    return container;
+}
 
-    function generateQuestion(questionData) {
-        if (questionData.questionType === 'open') {
-            quizContainer.innerHTML = `
-                <h2>${questionData.question}</h2>
-                <textarea class="open-answer" id="open-answer"></textarea>
-            `;
-        } else {
-            quizContainer.innerHTML = `
-                <h2>${questionData.question}</h2>
-                <div class="odpowiedzi">
-                    ${questionData.answers.map((answer, index) => `
-                        <button data-index="${index}" class="answer-button">${answer.text}</button>
-                    `).join('')}
+function createComment(author, comment, rating, dateTime) {
+    const commentDiv = document.createElement('div');
+    commentDiv.className = 'comment-card';
+
+    commentDiv.innerHTML = `
+        <div class="author-image" style="background-image: url('${author.avatar_url}')"></div>
+        <div class="comment-content">
+            <div class="comment-header">
+                <h3 class="comment-author">${author.username}</h3>
+                <div class="comment-meta">
+                    ${createStarRating(rating).outerHTML}
+                    <span class="comment-date">${formatData(dateTime)}</span>
                 </div>
-            `;
+                <span class="comment-settings"></span>
+            </div>
+            <p class="comment-text">${comment}</p>
+        </div>
+    `;
 
-            selectedAnswers = [];
+    return commentDiv;
+}
 
-            document.querySelectorAll('.answer-button').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const selectedAnswerIndex = parseInt(e.target.getAttribute('data-index'));
-                    if (questionData.questionType === 'multiple') {
-                        if (selectedAnswers.includes(selectedAnswerIndex)) {
-                            selectedAnswers = selectedAnswers.filter(index => index !== selectedAnswerIndex);
-                            e.target.classList.remove('selected');
-                        } else {
-                            selectedAnswers.push(selectedAnswerIndex);
-                            e.target.classList.add('selected');
-                        }
-                    } else {
-                        selectedAnswers = [selectedAnswerIndex];
-                        document.querySelectorAll('.answer-button').forEach(btn => btn.classList.remove('selected'));
-                        e.target.classList.add('selected');
-                    }
-                });
-            });
-        }
+
+function createRatingInput() {
+    const container = document.createElement('div');
+    container.className = 'rating-input';
+
+    for (let i = 5; i >= 1; i--) {
+        const star = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        star.setAttribute('class', 'rating-star');
+        star.setAttribute('data-value', i);
+        star.setAttribute('viewBox', '0 0 24 24');
+        star.innerHTML = '<path d="M12 0l3.09 6.26L22 7.27l-5 4.87 1.18 6.88L12 16l-6.18 3.02L7 12.14 2 7.27l6.91-1.01L12 0z"/>';
+        container.appendChild(star);
     }
 
-    nextButton.addEventListener('click', () => {
-        const currentQuestion = quizData[currentQuestionIndex];
-        let isCorrect = false;
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'rating';
+    hiddenInput.value = '0';
 
-        if (currentQuestion.questionType === 'open') {
-            const openAnswer = document.getElementById('open-answer').value;
-            isCorrect = openAnswer.trim().length > 0; // Zakładamy, że każda odpowiedź jest poprawna, jeśli nie jest pusta
-        } else {
-            isCorrect = currentQuestion.questionType === 'multiple'
-                ? selectedAnswers.sort().toString() === currentQuestion.correctAnswers.sort().toString()
-                : selectedAnswers[0] === currentQuestion.correctAnswers[0];
-        }
+    container.appendChild(hiddenInput);
+    return container;
+}
 
-        if (isCorrect) {
-            correctAnswersCount++;
-        }
+document.querySelector('.comment-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const rating = parseInt(form.rating.value);
 
-        currentQuestionIndex++;
-        if (currentQuestionIndex < quizData.length) {
-            generateQuestion(quizData[currentQuestionIndex]);
-        } else {
-            localStorage.setItem('correctAnswersCount', correctAnswersCount);
-            localStorage.setItem('totalQuestions', quizData.length);
-            window.location.href = 'wynik/index.html';
-        }
+    if (!rating || rating < 1 || rating > 5) {
+        alert('Proszę wybrać ocenę (1-5 gwiazdek)');
+        return;
+    }
+
+    request('comment.add', {
+        quiz_id: quizId,
+        user_id: 1,
+        comment_text: form.comment_text.value,
+        rating: rating,
     });
 
-    hintButton.addEventListener('click', () => {
-        alert(quizData[currentQuestionIndex].hint);
-    });
-
-    fetchQuizData().then(data => {
-        quizData = data;
-        generateQuestion(quizData[currentQuestionIndex]);
+    setTimeout(() => request('comment.get', {}, 'commentList'), 1000);
+    form.reset();
+    form.rating.value = '0';
+    document.querySelectorAll('.rating-star').forEach(star => {
+        star.style.fillOpacity = '0.3';
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const ratingContainer = document.querySelector('.rating-input-container');
+    ratingContainer.appendChild(createRatingInput());
+
+    document.querySelectorAll('.rating-star').forEach(star => {
+        star.addEventListener('click', (e) => {
+            const value = parseInt(e.target.closest('.rating-star').dataset.value);
+            document.querySelector('input[name="rating"]').value = value;
+
+            document.querySelectorAll('.rating-star').forEach((s, index) => {
+                s.classList.toggle('active', 5 - index <= value);
+            });
+        });
+
+        star.addEventListener('mouseover', (e) => {
+            const hoverValue = parseInt(e.target.closest('.rating-star').dataset.value);
+            document.querySelectorAll('.rating-star').forEach((s, index) => {
+                s.style.fillOpacity = 5 - index <= hoverValue ? '0.8' : '0.3';
+            });
+        });
+
+        star.addEventListener('mouseout', () => {
+            const currentValue = parseInt(document.querySelector('input[name="rating"]').value);
+            document.querySelectorAll('.rating-star').forEach((s, index) => {
+                s.style.fillOpacity = 5 - index <= currentValue ? '1' : '0.3';
+            });
+        });
+    });
+});
+
+
+function copyLink()
+{
+    let copyText = window.location;
+    navigator.clipboard.writeText(copyText);
+    showCopiedText(`Skopiowano link do quizu :3`);
+}
+
+function showCopiedText(text) {
+    const tooltip = document.getElementById("tooltipText");
+    tooltip.textContent = text;
+
+    tooltip.style.visibility = "visible";
+    tooltip.style.opacity = "1";
+
+    setTimeout(() => {
+        tooltip.style.visibility = "hidden";
+        tooltip.style.opacity = "0";
+    }, 2000);
+}

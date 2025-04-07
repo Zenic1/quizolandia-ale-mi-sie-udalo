@@ -93,7 +93,7 @@ export const dbConfig: PoolOptions = {
 export const Queries: QueriesStructure = {
   quiz: {
     get: `SELECT * FROM Quizzes`,
-    getWithCategory: `SELECT q.quiz_id, q.title, c.name AS category FROM Quizzes q JOIN Categories c ON q.category_id = c.category_id;`,
+    getWithCategory: `SELECT q.quiz_id, q.title, c.name AS category, c.category_id, q.cover_url, q.difficulty FROM Quizzes q JOIN Categories c ON q.category_id = c.category_id;`,
     searchWithTitle: `SELECT * FROM Quizzes WHERE title LIKE CONCAT('%', :title, '%');`,
     getTopThree: `SELECT u.username, s.score, s.max_possible_score, s.completed_at FROM UserScores s JOIN Users u ON s.user_id = u.user_id WHERE s.quiz_id = :quiz_id ORDER BY s.score DESC LIMIT 3;`,
     getAvgScore: `SELECT q.title, ROUND(AVG(s.score / s.max_possible_score * 100), 2) AS avg_percent FROM UserScores s JOIN Quizzes q ON s.quiz_id = q.quiz_id GROUP BY s.quiz_id;`,
@@ -105,7 +105,7 @@ export const Queries: QueriesStructure = {
   },
   category: {
     get: `SELECT * FROM Categories`,
-    countOfQuizzes: `SELECT c.name AS category, COUNT(*) AS quiz_count FROM Quizzes q JOIN Categories c ON q.category_id = c.category_id GROUP BY c.category_id`,
+    countOfQuizzes: `SELECT c.category_id, c.name AS category, COUNT(*) AS quiz_count FROM Quizzes q JOIN Categories c ON q.category_id = c.category_id GROUP BY c.category_id`,
     delete: `DELETE FROM Categories WHERE category_id = :category_id`,
     update: `UPDATE Categories SET name = :name, description = :description WHERE category_id = :category_id;`,
     add: `INSERT INTO Categories (name, description) VALUES (:name, :description);`
@@ -132,5 +132,9 @@ export const Queries: QueriesStructure = {
     delete: `DELETE FROM Users where user_id = :user_id`,
     update: `UPDATE Users SET username = :username, email = :email, password_hash = :password_hash, avatar_url = :avatar_url, created_at = :created_at, last_login = :last_login, is_admin = :is_admin WHERE user_id = :user_id`,
     add: `INSERT INTO Users (username, email, password_hash, avatar_url, created_at, last_login, is_admin) VALUES (:username, :email, :password_hash, :avatar_url, :created_at, :last_login, :is_admin);`
+  },
+  comment: {
+    get: `SELECT * FROM QuizComments`,
+    add: `INSERT INTO QuizComments (quiz_id, user_id, comment_text, rating, created_at) VALUES (:quiz_id, :user_id, :comment_text, :rating, CURRENT_TIMESTAMP())`
   }
 };

@@ -12,14 +12,54 @@
     <h1>Quizolandia</h1>
 </header>
 <main>
-    <div class="center" id="quiz-container">
+    <section class="hero-section">
+        <div class="quiz-image-wrapper">
+            <img src="" id="quiz-image" class="quiz-image-img" alt="Zdjęcie opisujące quiz"/>
+        </div>
 
-    </div>
-    <div class="right">
-        <button id="hint">PODPOWIEDZ</button>
-        <button id="next">NASTĘPNE PYTANIE</button>
-    </div>
+        <div class="button-group">
+            <button class="quiz-button start-button" onclick="relocate()">Rozpocznij Quiz</button>
+            <button class="quiz-button share-button" onclick="copyLink()">Udostępnij Quiz</button>
+            <div class="tooltip" id="copyTooltip">
+                <span class="tooltiptext" id="tooltipText"></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="quiz-info-section">
+        <div class="quiz-meta-container">
+            <h1 class="quiz-title">Efekty finansowe działalności przedsiębiorstwa</h1>
+            <div class="quiz-author">Autor: Jan Kowalski</div>
+        </div>
+
+        <div class="description-section">
+            <p class="description-text">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+        </div>
+    </section>
+
+    <section class="comments-section">
+        <form class="comment-form">
+            <textarea class="comment-input" name='comment_text' placeholder="Dodaj komentarz..." rows="4"></textarea>
+            <div class="rating-input-container"></div>
+            <button type="submit" class="quiz-button start-button">Dodaj komentarz</button>
+        </form>
+
+        <div class="comment-list" id="commentList">
+        </div>
+    </section>
+
+
 </main>
+<div id="ifNoQuiz" class="comments-section" style="color: black; text-align: center; margin-top: 200px">
+    Nie znaleziono quizu :/
+</div>
+
+<script src="../scripts/global.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.7/rxjs.umd.min.js"></script>
+<script src="../scripts/data.js"></script>
 <script src="../scripts/quiz.js"></script>
+<script src="../scripts/quiz-data.js"></script>
 </body>
 </html>
