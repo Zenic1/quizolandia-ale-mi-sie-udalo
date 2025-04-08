@@ -82,9 +82,9 @@ async function handleMethod(
     const method = (Queries as QueriesStructure)[category];
     const query: string = method[operation] as string;
 
-    const rawResult = await executeQuery(query, params.params);
+    let rawResult = await executeQuery(query, params.params);
 
-    if(params.method === 'user.getFromLogin') await filterLoginResults(rawResult, params);
+    if(params.method === 'user.getFromLogin' || params.method === 'user.getFromEmail') rawResult = await filterLoginResults(rawResult, params);
 
     if (params.responseVar && params.responseVar !== "N/A") {
       await sendResponse(ws, params.responseVar, rawResult);
@@ -127,9 +127,15 @@ async function sendError(
 }
 
 async function filterLoginResults(data: any[], params: Params) {
-  console.log(data, params)
-  data = data.filter(async (item: any) => {
-    return (await bcrypt.compare(params.params.password, item.password_hash))
-  })
-  return data;
+  console.log('Input data:', data, params);
+
+  const filteredData = await Promise.all(
+      data.map(async (item: any) => {
+        const isMatch = await bcrypt.compare(params.params.password, item.password_hash);
+        return isMatch ? item : null;
+      })
+  ).then(results => results.filter(item => item !== null));
+
+  console.log('Filtered data:', filteredData);
+  return filteredData;
 }
