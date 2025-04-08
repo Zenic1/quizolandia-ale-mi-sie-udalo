@@ -3,16 +3,24 @@ const urlParams = new URLSearchParams(queryString);
 const quizId = parseInt(urlParams.get("quizId") ?? 0);
 
 
+
 const copyText = window.location.origin + '/quizChlopie/?quizId=' + quizId
 
 console.log(quizId);
 
 if(quizId){
     document.getElementById('ifNoQuiz').style.display = 'none';
-    ws.onopen = () => request('quiz.get', {}, 'fullQuizList')
+    ws.onopen = () => {
+        request('quiz.get', {}, 'fullQuizList')
+        request('comment.get', {}, 'fullQuizList')
+        request('user.get', {}, 'fullQuizList')
+    }
     dataChange.subscribe((data) => {
         if(data === 'fullQuizList') loadQuiz(cachedData.get('fullQuizList').find(quiz => quiz.quiz_id === quizId));
         else if(data === 'commentList') loadComments(quizId)
+        else if(data === 'studentList') {
+            document.getElementsByClassName('quiz-author')[0].textContent = `Autor: ` + cachedData.get('studentList').find(user => user.user_id === quiz.author_id).username;
+        }
     })
 }
 else document.getElementsByTagName('main')[0].style.display = 'none';

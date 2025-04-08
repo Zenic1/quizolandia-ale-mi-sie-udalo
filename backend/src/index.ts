@@ -9,8 +9,9 @@ import {
   Params,
   QueriesStructure,
 } from "./types";
-import { logger, wss, dbConfig, Queries } from "./config";
+import {logger, wss, dbConfig, Queries, saltRounds} from "./config";
 import { query } from "winston";
+import bcrypt from 'bcrypt';
 logger.info(``);
 logger.info(`Successfully started the server!`);
 logger.info(``);
@@ -70,11 +71,20 @@ async function handleMethod(
     params: RequestPayload
 ): Promise<void> {
   try {
+    if(params.method === 'user.add')
+    {
+      await bcrypt.hash(params.params.password, saltRounds).then(function(hash: any) {
+        params.params.password_hash = hash;
+        console.log(hash);
+      });
+    }
     const [category, operation] = params.method.split(".");
     const method = (Queries as QueriesStructure)[category];
     const query: string = method[operation] as string;
 
     const rawResult = await executeQuery(query, params.params);
+
+    if(params.method === 'user.getFromLogin') await filterLoginResults(rawResult, params);
 
     if (params.responseVar && params.responseVar !== "N/A") {
       await sendResponse(ws, params.responseVar, rawResult);
@@ -114,4 +124,12 @@ async function sendError(
     details?: any
 ): Promise<void> {
   await sendResponse(ws, "error", { code, message, details });
+}
+
+async function filterLoginResults(data: any[], params: Params) {
+  console.log(data, params)
+  data = data.filter(async (item: any) => {
+    return (await bcrypt.compare(params.params.password, item.password_hash))
+  })
+  return data;
 }

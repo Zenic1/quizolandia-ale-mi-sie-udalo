@@ -19,7 +19,7 @@
   </h2>
 
   <label for="username">Nazwa Użytkownika</label>
-  <input id="username" name="text" placeholder="JanKowalski09" type="text">
+  <input id="username" name="username" placeholder="JanKowalski09" type="text">
 
   <label for="email">Email</label>
   <input id="email" name="email" placeholder="janek@knuruf.tech" type="email">
@@ -39,24 +39,9 @@
     <button class="button-confirm" type="submit">Rejestracja →</button>
   </div>
 </form>
-
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('register');
-
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      const pass1 = form.elements['password'].value;
-      const pass2 = form.elements['password2'].value;
-
-      if (pass1 !== pass2) {
-        alert("Hasła się nie zgadzają!");
-      } else {
-        form.submit();
-      }
-    });
-  });
-</script>
+<script src="../scripts/global.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.7/rxjs.umd.min.js"></script>
+<script src="../scripts/data.js"></script>
+<script src="../scripts/register.js"></script>
 </body>
 </html>

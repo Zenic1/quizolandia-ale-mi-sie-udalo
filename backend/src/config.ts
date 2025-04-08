@@ -131,10 +131,14 @@ export const Queries: QueriesStructure = {
     getQuizHistory: `SELECT q.title, s.score, s.max_possible_score, s.completed_at FROM UserScores s JOIN Quizzes q ON s.quiz_id = q.quiz_id WHERE s.user_id = :user_id ORDER BY s.completed_at DESC;`,
     delete: `DELETE FROM Users where user_id = :user_id`,
     update: `UPDATE Users SET username = :username, email = :email, password_hash = :password_hash, avatar_url = :avatar_url, created_at = :created_at, last_login = :last_login, is_admin = :is_admin WHERE user_id = :user_id`,
-    add: `INSERT INTO Users (username, email, password_hash, avatar_url, created_at, last_login, is_admin) VALUES (:username, :email, :password_hash, :avatar_url, :created_at, :last_login, :is_admin);`
+    add: `INSERT INTO Users (username, email, password_hash, is_admin) VALUES (:username, :email, :password_hash, :is_admin);`,
+    getFromLogin: `SELECT * FROM Users where username like :username;`,
+    log: `Update Users set last_login = CURRENT_TIMESTAMP() WHERE user_id = :user_id;`,
   },
   comment: {
     get: `SELECT * FROM QuizComments`,
     add: `INSERT INTO QuizComments (quiz_id, user_id, comment_text, rating, created_at) VALUES (:quiz_id, :user_id, :comment_text, :rating, CURRENT_TIMESTAMP())`
   }
 };
+
+export const saltRounds = 10;
