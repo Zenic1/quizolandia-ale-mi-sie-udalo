@@ -65,15 +65,6 @@ function request(method, params = {}, responseVar = "N/A") {
     });
 }
 
-function initAllGetData() {
-    request("user.get", {}, "studentList");
-    request("category.get", {}, "categories");
-    request("answer.get", {}, "answerList");
-    request("question.get", {}, "questionList");
-    request("quiz.getWithCategory", {}, "quizList");
-    request('comment.get', {}, "commentList");
-}
-
 let cachedData = new Map();
 let dataChange = new rxjs.Subject();
 
