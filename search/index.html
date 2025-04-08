@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/search.css">
+    <meta name="view-transition" content="same-origin">
     <title>Wyszukiwanie</title>
 </head>
 <body>
@@ -23,70 +24,19 @@
                 type="search"
                 id="searchInput"
                 placeholder="Szukaj quizów..."
-                value="Historia średniowiecznej Polski"
+                value=""
                 name="searchQuery"
+                onkeydown="changeSearch(event.target.value)"
+                onkeyup="changeSearch(event.target.value)"
+                onchange="changeSearch(event.target.value)"
         >
+        <select name="categoryId" id="categoryDropDown" onchange="changeCategory(event.target.value)">
+            <option value="0" disabled>Wybierz Kategorię!</option>
+        </select>
         <button type="submit">Szukaj</button>
     </form>
 
     <div class="container">
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-        <a href="index.html" class="quiz">
-            <img src="../assets/images/losowe.jpg" alt="quiz">
-            <p>Nazwa ⭐⭐⭐⭐</p>
-        </a>
-
     </div>
 </main>
 
