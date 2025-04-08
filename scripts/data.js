@@ -13,7 +13,7 @@ function initializeWebSocket() {
         ws.close();
     };
 
-    ws.addEventListener('open', initAllGetData)
+    // ws.addEventListener('open', initAllGetData)
 
     ws.onmessage = function (event) {
         const response = JSON.parse(event.data);
@@ -47,6 +47,22 @@ function request(method, params = {}, responseVar = "N/A") {
             },
         })
     );
+    return new Promise((resolve, reject) => {
+        ws.addEventListener('message', (event) => {
+            if(!event.data) {
+                reject(new Error('Error in data', event.data));
+                return;
+            }
+            const data = JSON.parse(event.data);
+
+            const { variable, value } = data.params;
+            console.log('WebSocket message received:', value, variable, event.data, data);
+            if(variable === responseVar)
+            {
+                resolve(value);
+            }
+        })
+    });
 }
 
 function initAllGetData() {

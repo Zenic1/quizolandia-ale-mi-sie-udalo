@@ -133,6 +133,7 @@ export const Queries: QueriesStructure = {
     update: `UPDATE Users SET username = :username, email = :email, password_hash = :password_hash, avatar_url = :avatar_url, created_at = :created_at, last_login = :last_login, is_admin = :is_admin WHERE user_id = :user_id`,
     add: `INSERT INTO Users (username, email, password_hash, is_admin) VALUES (:username, :email, :password_hash, :is_admin);`,
     getFromLogin: `SELECT * FROM Users where username like :username;`,
+    getFromEmail: `SELECT * FROM Users where email like :email;`,
     log: `Update Users set last_login = CURRENT_TIMESTAMP() WHERE user_id = :user_id;`,
   },
   comment: {

@@ -13,14 +13,14 @@
 </header>
 
 <main>
-    <form action="../" id="login">
+    <form action="../" id="login" onsubmit="getUsers(event)">
         <h2>
             Witaj,<br>
             <span>Zaloguj się</span>
         </h2>
 
-        <label for="email">Email</label>
-        <input id="email" name="email" placeholder="janek@knuruf.tech" type="email">
+        <label for="text">Email</label>
+        <input id="text" name="text" placeholder="janek@knuruf.tech albo JanKowalski09" type="text">
 
         <label for="password">Hasło</label>
         <input id="password" name="password" placeholder="********" type="password">
@@ -35,5 +35,9 @@
         </div>
     </form>
 </main>
+<script src="../scripts/global.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.7/rxjs.umd.min.js"></script>
+<script src="../scripts/data.js"></script>
+<script src="../scripts/login.js"></script>
 </body>
 </html>
