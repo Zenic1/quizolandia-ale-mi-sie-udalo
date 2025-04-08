@@ -1,9 +1,4 @@
 :root {
-    --font-color: #f0f6ff;
-    --bg-color: #475b63;
-    --second-bg-color: #BACDB0;
-    --header-color: #729B79;
-    --main-color: #2E2C2F;
     --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --gradient: linear-gradient(45deg, var(--header-color), var(--second-bg-color));
@@ -15,14 +10,6 @@
     box-sizing: border-box;
     transition: var(--transition);
 }
-
-body {
-    background-color: var(--bg-color);
-    font-family: 'Inter', sans-serif;
-    color: var(--font-color);
-    line-height: 1.6;
-}
-
 nav {
     background: var(--header-color);
     padding: 1rem 2rem;
@@ -81,8 +68,8 @@ nav button:hover {
     display: grid;
     grid-template-columns: 1fr auto auto;
     gap: 1rem;
-    max-width: 1200px;
-    margin: 2rem auto;
+    /* max-width: 1200px; */
+    margin: 2rem;
     padding: 1.5rem;
     background: var(--second-bg-color);
     border-radius: 16px;

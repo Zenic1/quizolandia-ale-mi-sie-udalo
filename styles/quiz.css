@@ -1,22 +1,8 @@
 ﻿:root {
-    --primary-green: #2ecc71;
-    --primary-blue: #3498db;
-    --dark-text: white;
-    --light-text: #ecf0f1;
     --shadow: 0 10px 20px rgba(0,0,0,0.1);
-    --comment-bg: #f5f6fa;
-    --comment-border: #e0e0e0;
-    --comment-text: #2c3e50;
     --comment-meta: #7f8c8d;
     --star-active: #ffd700;
     --star-inactive: #e0e0e0;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
 body {
@@ -24,9 +10,9 @@ body {
     max-width: 1200px;
     margin: 0 auto;
 }
-
-textarea {
-    resize: none;
+textarea::placeholder{
+    color: var(--main-color);
+    opacity: 1;
 }
 
 .hero-section {
@@ -42,7 +28,7 @@ textarea {
 }
 
 .quiz-info-section {
-    background: #f8f9fa;
+    background: var(--second-bg-color);
     border-radius: 20px;
     padding: 2.5rem;
     margin: 2rem 0;
@@ -52,7 +38,6 @@ textarea {
 .quiz-meta-container {
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
-    border-bottom: 2px solid #e0e0e0;
 }
 
 .quiz-image-wrapper {
@@ -112,6 +97,7 @@ textarea {
     height: 100%;
     width: 100%;
     display: block;
+    object-fit: cover;
 }
 
 .button-group {
@@ -128,7 +114,7 @@ textarea {
     padding: 1.5rem 2rem;
     border: none;
     border-radius: 15px;
-    color: white;
+    color: var(--font-color);
     font-size: 1.2rem;
     font-weight: 600;
     cursor: pointer;
@@ -144,8 +130,11 @@ textarea {
     box-shadow: var(--shadow);
 }
 
-.start-button { background: var(--primary-green); }
-.share-button { background: var(--primary-blue); }
+.start-button { background: var(--header-color); }
+.share-button { 
+    background: var(--second-bg-color); 
+    color: var(--main-color);
+}
 
 .meta-section {
     display: none;
@@ -153,7 +142,7 @@ textarea {
 
 .quiz-title {
     font-weight: 800;
-    color: #2c3e50;
+    color: var(--main-color);
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
 }
@@ -182,7 +171,7 @@ textarea {
 
 
 .comments-section {
-    background: var(--comment-bg);
+    background: var(--second-bg-color);
     border: 1px solid var(--comment-border);
     border-radius: 12px;
     padding: 2rem;
@@ -196,13 +185,15 @@ textarea {
 .comment-input {
     width: 100%;
     padding: 1.5rem;
-    border: 2px solid var(--comment-border);
+    border: none;
     border-radius: 8px;
     font-size: 1rem;
     margin-bottom: 1rem;
     transition: all 0.2s ease;
-    background: white;
-    color: var(--comment-text);
+    resize: none;
+    color: var(--main-color);
+    background-color: var(--font-color);
+    font-family: Roboto, Inter, Cantarell, Arial, sans-serif;
 }
 
 .comment-input:focus {
@@ -217,13 +208,13 @@ textarea {
 }
 
 .comment-author {
-    color: #2c3e50;
+    color: var(--main-color);
     font-weight: 700;
     margin-left: 1rem;
 }
 
 .comment-card {
-    background: white;
+    background: var(--font-color);
     border: 1px solid var(--comment-border);
     padding: 1.5rem;
     border-radius: 10px;
@@ -240,7 +231,7 @@ textarea {
     height: 48px;
     border-radius: 50%;
     flex-shrink: 0;
-    background: #3498db center center;
+    background: var(--bg-color) center center;
     background-size: cover;
     border: 2px solid var(--comment-bg);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -290,10 +281,10 @@ textarea {
 }
 
 .comment-text {
-    color: var(--comment-text);
+    color: var(--main-color);
     line-height: 1.6;
     padding-left: 0.5rem;
-    border-left: 3px solid var(--primary-green);
+    border-left: 3px solid var(--header-color);
 }
 
 .star-rating {

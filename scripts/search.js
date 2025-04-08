@@ -145,16 +145,6 @@ function capitalFirstLetter(text) {
 setInterval(fetchData, 10000);
 
 
-const scrollProgress = document.createElement('div');
-scrollProgress.className = 'scroll-progress';
-document.body.prepend(scrollProgress);
-
-window.addEventListener('scroll', () => {
-  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  scrollProgress.style.width = (winScroll / height) * 100 + '%';
-});
-
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
