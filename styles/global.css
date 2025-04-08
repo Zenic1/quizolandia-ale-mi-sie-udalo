@@ -4,25 +4,83 @@
     --second-bg-color: #BACDB0;
     --header-color: #729B79;
     --main-color: #2E2C2F;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
 }
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-}
-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding-left: 5vw;
-    padding-right: 5vw;
-    background-color: var(--header-color);
-    width: 100vw;
-    height: 8vh;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    transition: var(--transition);
 
+}
+/*header {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    padding-left: 5vw;*/
+/*    padding-right: 5vw;*/
+/*    background-color: var(--header-color);*/
+/*    width: 100vw;*/
+/*    height: 8vh;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: space-between;*/
+
+/*}*/
+nav {
+    background: var(--header-color);
+    padding: 1rem 2rem;
+    box-shadow: var(--shadow);
+    border-bottom: 2px solid var(--second-bg-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav h1 {
+    font-size: 2.5rem;
+    color: var(--font-color);
+    font-weight: 700;
+    letter-spacing: -1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav div {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+nav img {
+    width: 32px;
+    height: 32px;
+    filter: brightness(0) invert(1);
+    transition: transform 0.2s ease;
+}
+
+nav img:hover {
+    transform: scale(1.1);
+}
+
+nav button {
+    background: var(--main-color);
+    border: 2px solid var(--font-color);
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    color: var(--font-color);
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+nav button:hover {
+    background: var(--font-color);
+    color: var(--main-color);
 }
 header h1 {
     color: var(--font-color);
@@ -41,4 +99,28 @@ body {
     justify-content: center;
     flex-direction: column;
     align-items: center;
+}
+a{
+    text-decoration: none;
+}
+footer {
+    background: var(--header-color);
+    padding: 1.5rem;
+    text-align: center;
+    margin-top: 4rem;
+    border-top: 2px solid var(--second-bg-color);
+}
+nav button:hover {
+    transform: scale(1.05);
+}
+@media screen and (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    nav h1 {
+        font-size: 2rem;
+    }
 }

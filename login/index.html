@@ -8,9 +8,14 @@
     <link rel="stylesheet" href="../styles/login-register.css">
 </head>
 <body>
-<header>
-    <h1>Quizolandia</h1>
-</header>
+<nav>
+    <a href="index.html"><h1>Quizolandia</h1></a>
+    <div>
+        <img src="../assets/images/bell.png" alt="powiadomienia">
+        <img src="../assets/images/search.png" alt="wyszukiwanie">
+        <button>Wyloguj się</button>
+    </div>
+</nav>
 
 <main>
     <form action="../" id="login" onsubmit="getUsers(event)">
@@ -35,6 +40,9 @@
         </div>
     </form>
 </main>
+<footer>
+    <p>&copy; Quizolandia Team 2025</p>
+</footer>
 <script src="../scripts/global.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.7/rxjs.umd.min.js"></script>
 <script src="../scripts/data.js"></script>

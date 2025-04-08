@@ -115,7 +115,7 @@ function generateOptionHtml(title, count, value, disabled = false) {
 
 function generateCategoryHTML(categories) {
   categoryDropDown.innerHTML = "";
-  let wybierz = generateOptionHtml('Wybierz Kategorię!', 0, 0, true)
+  let wybierz = generateOptionHtml('Kategoria', 0, 0, true)
   categoryDropDown.appendChild(wybierz);
   let wszystkie = generateOptionHtml("Wszystkie", 0, 0);
   categoryDropDown.appendChild(wszystkie);
@@ -142,7 +142,7 @@ function capitalFirstLetter(text) {
   return `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
 }
 
-setInterval(fetchData, 10000);
+// setInterval(fetchData, 10000);
 
 
 const observer = new IntersectionObserver((entries) => {
