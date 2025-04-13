@@ -23,7 +23,7 @@ function logUser(data){
         return;
     }
 
-    alert(`Znaleziono użytkownika: ${data[0].username}`)
+    alert(`Pomyślnie zalogowano jako użytkownik: ${data[0].username}`)
     console.log(data, data[0])
     request('user.log', data[0])
 }

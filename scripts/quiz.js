@@ -34,6 +34,10 @@ function createComment(author, comment, rating, dateTime) {
     return commentDiv;
 }
 
+function resetComments()
+{
+    document.getElementById('commentList').innerHTML = '';
+}
 
 function createRatingInput() {
     const container = document.createElement('div');
@@ -80,6 +84,7 @@ document.querySelector('.comment-form').addEventListener('submit', (event) => {
     document.querySelectorAll('.rating-star').forEach(star => {
         star.style.fillOpacity = '0.3';
     });
+    loadComments(quizId)
 });
 
 document.addEventListener('DOMContentLoaded', () => {

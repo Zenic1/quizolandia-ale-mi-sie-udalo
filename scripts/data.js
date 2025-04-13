@@ -3,25 +3,25 @@ function initializeWebSocket() {
     const RECONNECT_INTERVAL = 2500;
     ws = new WebSocket("ws://localhost:8080");
 
-    ws.onclose = function () {
+    ws.addEventListener('close', function () {
         console.log("WebSocket closed, reconnecting...");
         rxjs.timer(RECONNECT_INTERVAL).subscribe(() => initializeWebSocket());
-    };
+    })
 
-    ws.onerror = function (event) {
+    ws.addEventListener('error', function (event) {
         console.error("WebSocket error", event);
         ws.close();
-    };
+    })
 
     // ws.addEventListener('open', initAllGetData)
 
-    ws.onmessage = function (event) {
+    ws.addEventListener('message', function (event) {
         const response = JSON.parse(event.data);
         if (response.action === "response") {
             const { variable, value } = response.params;
             handleResponse(variable, value);
         }
-    };
+    })
 }
 
 function handleResponse(variable, value) {
@@ -59,6 +59,7 @@ function request(method, params = {}, responseVar = "N/A") {
             console.log('WebSocket message received:', value, variable, event.data, data);
             if(variable === responseVar)
             {
+                console.log('yes geeked ah')
                 resolve(value);
             }
         })
