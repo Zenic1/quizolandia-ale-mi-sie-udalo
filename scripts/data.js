@@ -59,7 +59,6 @@ function request(method, params = {}, responseVar = "N/A") {
             console.log('WebSocket message received:', value, variable, event.data, data);
             if(variable === responseVar)
             {
-                console.log('yes geeked ah')
                 resolve(value);
             }
         })
