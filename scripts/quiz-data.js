@@ -14,7 +14,6 @@ if(quizId){
         console.error(1)
         request('quiz.get', {}, 'fullQuizList').then(data => loadQuiz(data.find(quiz => quiz.quiz_id === quizId)))
         loadComments(quizId)
-        request('user.get', {}, 'studentList').then(data => loadAuthor(data))
     })
 }
 else document.getElementsByTagName('main')[0].style.display = 'none';
@@ -33,6 +32,8 @@ function loadQuiz(quiz) {
     document.getElementsByClassName('description-section')[0].textContent = quiz.description;
 
     document.getElementsByClassName('quiz-title')[0].textContent = quiz.title;
+
+    request('user.get', {}, 'studentList').then(data => loadAuthor(data))
 
     loadComments(quiz.quiz_id)
 }
