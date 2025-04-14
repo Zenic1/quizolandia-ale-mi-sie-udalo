@@ -20,8 +20,8 @@ import { PoolOptions } from "mysql2/promise";
 export const logger = winston.createLogger({
   level: "info",
   format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
+      winston.format.timestamp(),
+      winston.format.json()
   ),
   transports: [
     new winston.transports.Console(),
@@ -32,8 +32,8 @@ export const logger = winston.createLogger({
       maxSize: "20m",
       maxFiles: "14d",
       format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json()
+          winston.format.timestamp(),
+          winston.format.json()
       ),
       options: { flags: "a" },
     }),
@@ -98,7 +98,7 @@ export const Queries: QueriesStructure = {
     getTopThree: `SELECT u.username, s.score, s.max_possible_score, s.completed_at FROM UserScores s JOIN Users u ON s.user_id = u.user_id WHERE s.quiz_id = :quiz_id ORDER BY s.score DESC LIMIT 3;`,
     getAvgScore: `SELECT q.title, ROUND(AVG(s.score / s.max_possible_score * 100), 2) AS avg_percent FROM UserScores s JOIN Quizzes q ON s.quiz_id = q.quiz_id GROUP BY s.quiz_id;`,
     getNumberOfDistinctAttempts: `SELECT q.title, COUNT(DISTINCT s.user_id) AS users_attempted FROM UserScores s JOIN Quizzes q ON s.quiz_id = q.quiz_id GROUP BY s.quiz_id;`,
-    getFullInfo: `SELECT q.question_id, q.question_text, q.question_type, a.answer_id, a.answer_text, a.is_correct FROM Questions q LEFT JOIN Answers a ON q.question_id = a.question_id WHERE q.quiz_id = :quiz_id ORDER BY q.question_order;`,
+    getFullInfo: `SELECT q.question_id, q.question_text, q.question_type, q.hint, a.answer_id, a.answer_text, a.is_correct FROM Questions q LEFT JOIN Answers a ON q.question_id = a.answer_id WHERE q.quiz_id = :quiz_id ORDER BY q.question_order;`,
     delete: `DELETE FROM Quizzes WHERE quiz_id = :quiz_id;`,
     update: `UPDATE Quizzes SET title = :title, description = :description, score = :score, cover_url = :cover_url, category_id = :category_id, author_id = :author_id, created_at = :created_at, time_limit = :time_limit, difficulty = :difficulty, is_public = :is_public WHERE quiz_id = :quiz_id;`,
     add: `INSERT INTO Quizzes (title, description, score, cover_url, category_id, author_id, created_at, time_limit, difficulty, is_public) values (:title, :description, :score, :cover_url, :category_id, :author_id, :created_at, :time_limit, :difficulty, :is_public);`
@@ -139,7 +139,12 @@ export const Queries: QueriesStructure = {
   comment: {
     get: `SELECT * FROM QuizComments`,
     add: `INSERT INTO QuizComments (quiz_id, user_id, comment_text, rating, created_at) VALUES (:quiz_id, :user_id, :comment_text, :rating, CURRENT_TIMESTAMP())`
-  }
+  },
+  userScore: {
+    add: `INSERT INTO UserScores (score_id, user_id, quiz_id, score, max_possible_score, completed_at)
+          VALUES (:score_id, :user_id, :quiz_id, :score, :max_possible_score, CURRENT_TIMESTAMP());`,
+    get: ""
+  },
 };
 
 export const saltRounds = 10;

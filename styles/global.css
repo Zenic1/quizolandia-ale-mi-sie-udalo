@@ -14,20 +14,6 @@
     transition: var(--transition);
 
 }
-/*header {*/
-/*    position: absolute;*/
-/*    top: 0;*/
-/*    left: 0;*/
-/*    padding-left: 5vw;*/
-/*    padding-right: 5vw;*/
-/*    background-color: var(--header-color);*/
-/*    width: 100vw;*/
-/*    height: 8vh;*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    justify-content: space-between;*/
-
-/*}*/
 nav {
     background: var(--header-color);
     padding: 1rem 2rem;

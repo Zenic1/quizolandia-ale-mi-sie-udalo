@@ -1,8 +1,8 @@
 ﻿let userId = 0;
 function storeLogin(login, password)
 {
-    localStorage.setItem('userLogin', login.toString());
-    localStorage.setItem('userPassword', password.toString());
+    sessionStorage.setItem('userLogin', login.toString());
+    sessionStorage.setItem('userPassword', password.toString());
 }
 
 function tryLogin(login, password, callback)
@@ -37,6 +37,6 @@ function logUser(data){
     request('user.log', data[0])
 }
 
-const login = localStorage.getItem('userLogin');
-const password = localStorage.getItem('userPassword');
-if(login && password) ws.addEventListener('open', () => tryLogin(login, password, () => {}));
+const login = sessionStorage.getItem('userLogin');
+const password = sessionStorage.getItem('userPassword');
+// if(login && password) ws.addEventListener('open', () => tryLogin(login, password, () => {}));

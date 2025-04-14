@@ -9,9 +9,10 @@ form {
     border: 2px solid #588157;
     margin-left: 30vw;
     margin-right: 30vw;
+    margin-top: 5vw;
     padding: 20px 20px 20px 5vw;
     box-shadow: 4px 4px var(--main-color);
-    height: 70vh;
+    min-height: fit-content;
 }
 h2 {
     color: var(--main-color);

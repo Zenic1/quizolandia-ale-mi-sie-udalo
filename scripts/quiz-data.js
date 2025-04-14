@@ -3,8 +3,8 @@ const urlParams = new URLSearchParams(queryString);
 const quizId = parseInt(urlParams.get("quizId") ?? 0);
 let currQuiz;
 
-
-const copyText = window.location.origin + '/quizChlopie/?quizId=' + quizId
+// TEMP: zmienic na bez 'quizoldania-ale-mi-sie-udalo
+const copyText = window.location.origin + '/quizolandia-ale-mi-sie-udalo/quizRozw/?quizId=' + quizId
 
 console.log(quizId);
 
@@ -24,18 +24,17 @@ function loadQuiz(quiz) {
 
     currQuiz = quiz;
 
-    console.log(cachedData.get('studentList'))
-
-    if(quiz.cover_url && quiz.cover_url.length > 0)
+    if (quiz.cover_url && quiz.cover_url.length > 0) {
         document.getElementById('quiz-image').setAttribute('src', `${quiz.cover_url}`);
+    }
 
     document.getElementsByClassName('description-section')[0].textContent = quiz.description;
-
     document.getElementsByClassName('quiz-title')[0].textContent = quiz.title;
 
-    request('user.get', {}, 'studentList').then(data => loadAuthor(data))
+    document.title = `${quiz.title} | Quizolandia`;
 
-    loadComments(quiz.quiz_id)
+    request('user.get', {}, 'studentList').then(data => loadAuthor(data));
+    loadComments(quiz.quiz_id);
 }
 
 function loadAuthor(data)
@@ -68,4 +67,4 @@ function relocate(){
     window.location.href = copyText;
 }
 
-setInterval(() => request('comment.get', {}, 'commentList'), 60000);
+setInterval(() => request('comment.get', {}, 'commentList'), 600000);

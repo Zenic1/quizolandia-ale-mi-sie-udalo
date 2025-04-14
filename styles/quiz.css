@@ -172,7 +172,6 @@ textarea::placeholder{
 
 .comments-section {
     background: var(--second-bg-color);
-    border: 1px solid var(--comment-border);
     border-radius: 12px;
     padding: 2rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -198,7 +197,6 @@ textarea::placeholder{
 
 .comment-input:focus {
     outline: none;
-    border-color: var(--primary-blue);
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
@@ -215,7 +213,6 @@ textarea::placeholder{
 
 .comment-card {
     background: var(--font-color);
-    border: 1px solid var(--comment-border);
     padding: 1.5rem;
     border-radius: 10px;
     margin-bottom: 1.5rem;
@@ -233,7 +230,7 @@ textarea::placeholder{
     flex-shrink: 0;
     background: var(--bg-color) center center;
     background-size: cover;
-    border: 2px solid var(--comment-bg);
+    border: 2px solid var(--header-color);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -263,7 +260,7 @@ textarea::placeholder{
 }
 
 .comment-settings:hover {
-    color: var(--primary-blue);
+    color: var(--main-color);
 }
 
 .comment-meta {
