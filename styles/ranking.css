@@ -1,0 +1,65 @@
+ h1, h2{
+      text-align: center;
+      font-size: 2.5em;
+  }
+
+ h3{
+     text-align: center;
+     font-size: 2em;
+ }
+  .ikona{
+    width: 50px;
+    height: 50px;
+  }
+.podium-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.podium {
+    text-align: center;
+    padding: 10px;
+    margin: 0 10px;
+    color: white;
+    border-radius: 5px;
+}
+
+.pierwszy {
+    background-color: gold;
+    height: 150px;
+    width: 100px;
+    order: 1;
+    color:black;
+}
+
+.drugi {
+    background-color: silver;
+    height: 120px;
+    width: 100px;
+    order: 0;
+}
+
+.trzeci {
+    background-color: #cd7f32;
+    height: 100px;
+    width: 100px;
+    order: 2;
+}
+
+.gracze {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.gracze p {
+    margin: 5px 0;
+}
+.podium-container img,
+.gracze img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; 
+    margin-bottom: 5px; 
+}

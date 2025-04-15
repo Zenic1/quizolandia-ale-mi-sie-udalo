@@ -95,7 +95,16 @@ footer {
     text-align: center;
     margin-top: 4rem;
     border-top: 2px solid var(--second-bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+footer>p{
+    color: var(--font-color);
+    font-size: 24px;
+}
+
+
 nav button:hover {
     transform: scale(1.05);
 }
