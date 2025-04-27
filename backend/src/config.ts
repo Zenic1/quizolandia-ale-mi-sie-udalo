@@ -146,6 +146,11 @@ export const Queries: QueriesStructure = {
           VALUES (:score_id, :user_id, :quiz_id, :score, :max_possible_score, CURRENT_TIMESTAMP());`,
     get: ""
   },
+  ticket: {
+    add: `INSERT INTO Tickets (user_id, subject, message)
+          values (:user_id, :subject, :message)`,
+    get: ""
+  }
 };
 
 export const saltRounds = 10;
