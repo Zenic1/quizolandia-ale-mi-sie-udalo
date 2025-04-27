@@ -92,7 +92,7 @@ export const dbConfig: PoolOptions = {
  * */
 export const Queries: QueriesStructure = {
   quiz: {
-    get: `SELECT * FROM Quizzes`,
+    get: `SELECT * FROM Quizzes where quiz_id = :quiz_id`,
     getWithCategory: `SELECT q.quiz_id, q.title, c.name AS category, c.category_id, q.cover_url, q.difficulty FROM Quizzes q JOIN Categories c ON q.category_id = c.category_id;`,
     searchWithTitle: `SELECT * FROM Quizzes WHERE title LIKE CONCAT('%', :title, '%');`,
     getTopThree: `SELECT u.username, s.score, s.max_possible_score, s.completed_at FROM UserScores s JOIN Users u ON s.user_id = u.user_id WHERE s.quiz_id = :quiz_id ORDER BY s.score DESC LIMIT 3;`,
@@ -127,6 +127,7 @@ export const Queries: QueriesStructure = {
   },
   user: {
     get: `SELECT * FROM Users`,
+    getMinimum: `SELECT user_id, username, avatar_url FROM Users WHERE user_id IN (:user_ids);`,
     getTopTen: `SELECT u.username, SUM(s.score) AS total_score FROM Users u JOIN UserScores s ON u.user_id = s.user_id GROUP BY u.user_id ORDER BY total_score DESC LIMIT 10;`,
     getQuizHistory: `SELECT q.title, s.score, s.max_possible_score, s.completed_at FROM UserScores s JOIN Quizzes q ON s.quiz_id = q.quiz_id WHERE s.user_id = :user_id ORDER BY s.completed_at DESC;`,
     delete: `DELETE FROM Users where user_id = :user_id`,
@@ -137,7 +138,7 @@ export const Queries: QueriesStructure = {
     log: `Update Users set last_login = CURRENT_TIMESTAMP() WHERE user_id = :user_id;`,
   },
   comment: {
-    get: `SELECT * FROM QuizComments`,
+    get: `SELECT * FROM QuizComments where quiz_id = :quiz_id;`,
     add: `INSERT INTO QuizComments (quiz_id, user_id, comment_text, rating, created_at) VALUES (:quiz_id, :user_id, :comment_text, :rating, CURRENT_TIMESTAMP())`
   },
   userScore: {

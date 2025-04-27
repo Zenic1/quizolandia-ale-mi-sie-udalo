@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(queryString);
     const quizId = parseInt(urlParams.get(`quizId`) ?? `0`);
 
-    const userId = parseInt(sessionStorage.getItem("userId"));
+    const userId = parseInt(sessionStorage.getItem("userId") || "0");
+
 
     if (totalQuestions === 0) {
         document.getElementById("score").textContent = "Nie rozwiązałeś ostatnio żadnego quizu.";
@@ -18,15 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const percentage = Math.round((correctCount / totalQuestions) * 100);
         document.getElementById("score").textContent = `Poprawne odpowiedzi: ${correctCount} z ${totalQuestions}`;
         document.getElementById("percentage").textContent = `Wynik: ${percentage}%`;
-
-        if (userId !== 0) {
-            if (ws.readyState === WebSocket.OPEN) {
+        if (!userId || isNaN(userId) || userId <= 0) {
+            console.error("Brak userId lub nieprawidłowy userId.");
+            return;
+        }
+        if (ws.readyState === WebSocket.OPEN) {
+            sendRequest(userId, quizId, correctCount, totalQuestions);
+        } else {
+            ws.addEventListener("open", () => {
                 sendRequest(userId, quizId, correctCount, totalQuestions);
-            } else {
-                ws.addEventListener("open", () => {
-                    sendRequest(userId, quizId, correctCount, totalQuestions);
-                });
-            }
+            });
         }
     }
 });
@@ -42,4 +44,7 @@ function sendRequest(userId, quizId, correctCount, totalQuestions) {
     }).catch(err => {
         console.log("Błąd zapisu", err);
     });
+}
+function goBack(){
+    window.location.href = "../";
 }

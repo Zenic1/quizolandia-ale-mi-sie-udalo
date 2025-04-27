@@ -1,5 +1,5 @@
 ﻿let userId = 0;
-function storeLogin(login, password)
+function storeLogin(login, password, userId)
 {
     sessionStorage.setItem('userLogin', login.toString());
     sessionStorage.setItem('userPassword', password.toString());
@@ -30,9 +30,10 @@ function logUser(data){
         return;
     }
 
-    userId = data[0].id;
+    userId = data[0].user_id;
 
-    // alert(`Pomyślnie zalogowano jako użytkownik: ${data[0].username}`)
+    alert(`Pomyślnie zalogowano jako użytkownik: ${data[0].username}`)
+    sessionStorage.setItem('userId', userId);
     console.log(data, data[0])
     request('user.log', data[0])
 }

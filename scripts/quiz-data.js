@@ -8,15 +8,16 @@ const copyText = window.location.origin + '/quizolandia-ale-mi-sie-udalo/quizRoz
 
 console.log(quizId);
 
-if(quizId){
+if (quizId) {
     document.getElementById('ifNoQuiz').style.display = 'none';
     ws.addEventListener('open', () => {
-        console.error(1)
-        request('quiz.get', {}, 'fullQuizList').then(data => loadQuiz(data.find(quiz => quiz.quiz_id === quizId)))
-        loadComments(quizId)
-    })
+        console.error(1);
+        request('quiz.get', { quiz_id: quizId }, 'fullQuizList')
+            .then(data => loadQuiz(data.find(quiz => quiz.quiz_id === quizId)));
+    });
+} else {
+    document.getElementsByTagName('main')[0].style.display = 'none';
 }
-else document.getElementsByTagName('main')[0].style.display = 'none';
 
 
 function loadQuiz(quiz) {
@@ -33,38 +34,41 @@ function loadQuiz(quiz) {
 
     document.title = `${quiz.title} | Quizolandia`;
 
-    request('user.get', {}, 'studentList').then(data => loadAuthor(data));
+    request('user.getMinimum', { user_ids: [quiz.author_id] }, 'authorData').then(data => loadAuthor(data));
     loadComments(quiz.quiz_id);
 }
 
-function loadAuthor(data)
-{
-    if(!data || !data.length || !currQuiz) return;
-    const filteredAuthor = data.find(user => user.user_id === currQuiz.author_id);
-    document.getElementsByClassName('quiz-author')[0].textContent = `Autor: ` + filteredAuthor.username;
+function loadAuthor(data) {
+    if (!data || !data.length || !currQuiz) return;
+    const author = data.find(user => user.user_id === currQuiz.author_id);
+    if (author) {
+        document.getElementsByClassName('quiz-author')[0].textContent = `Autor: ${author.username}`;
+    }
 }
 
-async function loadComments(quiz_id)
-{
-    const commentList = document.getElementById('commentList')
+async function loadComments(quiz_id) {
+    const commentList = document.getElementById('commentList');
     commentList.innerHTML = '';
-    let users = [];
 
-    await request('user.get', {}, 'studentList').then(data => users = data)
-    console.log(users)
-    request('comment.get', {}, 'commentList').then((comments) => {
-        console.log(comments)
-        resetComments();
-        comments.filter(comment => comment.quiz_id === quiz_id).reverse().forEach(comment =>
-        {
-            console.log(comment)
-            commentList.appendChild(createComment(users.find(user => user.user_id === comment.user_id), comment.comment_text, comment.rating, comment.created_at));
-        })
-    })
+    const comments = await request('comment.get', { quiz_id: quizId }, 'commentList');
+    if (!comments || comments.length === 0) return;
+
+    const userIds = [...new Set(comments.map(comment => comment.user_id))];
+
+    const users = await request('user.getMinimum', { user_ids: userIds }, 'filteredUsers');
+
+    resetComments();
+    comments
+        .filter(comment => comment.quiz_id === quiz_id)
+        .reverse()
+        .forEach(comment => {
+            const user = users.find(user => user.user_id === comment.user_id);
+            commentList.appendChild(createComment(user, comment.comment_text, comment.rating, comment.created_at));
+        });
 }
 
 function relocate(){
     window.location.href = copyText;
 }
 
-setInterval(() => request('comment.get', {}, 'commentList'), 600000);
+setInterval(() => request('comment.get', {quiz_id: quizId}, 'commentList'), 600000);

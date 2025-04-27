@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/global.css">
-    <link rel="stylesheet" href="../styles/kontakt.css">
-    <title>Kontakt</title>
+    <link rel="stylesheet" href="../styles/forms.css">
+    <title>Kontakt | Quizolandia</title>
 </head>
 <body>
 <nav>
@@ -17,19 +17,14 @@
         <button>Wyloguj się</button>
     </div>
 </nav>
-
-    
-    <form class="form">
-        <div class="title"><span>Kontakt</span></div>
-        <input class="input" name="powod" placeholder="Powód kontaktu" type="text">
-        <textarea name="tresc" id="tresc" cols="30" rows="10" placeholder="Treść"></textarea>
-        </div>
+    <form action="../" id="contactForm" method="POST">
+        <h2>Kontakt</h2>
+        <label for="powod">Powód kontaktu:</label><br>
+        <input class="input" name="powod" id="powod" type="text">
+        <label for="tresc">Treść:</label><br>
+        <textarea name="tresc" id="tresc" cols="30" rows="10"></textarea>
         <div class="center">   <button class="button-confirm">Wyślij</button></div>
-     
       </form>
-
-
-
 <footer>
     <p>&copy; Quizolandia Team 2025</p>
 </footer>

@@ -28,7 +28,7 @@ h2 span {
     font-size: 32px;
 }
 input {
-    width: 23vw;
+    width: 25vw;
     height: 40px;
     border-radius: 5px;
     border: 2px solid var(--main-color);
@@ -77,4 +77,19 @@ label {
     font-weight: bold;
     font-size: 19px;
     margin-bottom: -10px;
+}
+textarea{
+    width: 25vw;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    background-color: var(--font-color);
+    box-shadow: 4px 4px var(--main-color);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: Roboto, Inter, Cantarell, Arial, sans-serif;
+    color: var(--main-color);
+    padding: 5px 10px;
+    outline: none;
+    transition:none;
+    resize: vertical;
 }

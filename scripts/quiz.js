@@ -1,4 +1,5 @@
-﻿function createStarRating(rating) {
+﻿const userId = sessionStorage.getItem("userId") ? sessionStorage.getItem("userId") : 0;
+function createStarRating(rating) {
     const container = document.createElement('div');
     container.className = 'star-rating';
 
@@ -63,6 +64,12 @@ function createRatingInput() {
 
 document.querySelector('.comment-form').addEventListener('submit', (event) => {
     event.preventDefault();
+
+    if (!userId || isNaN(userId) || userId <= 0) {
+        console.error("Brak userId lub nieprawidłowy userId.");
+        alert("Aby dodać opinie musisz być zalogowany!")
+        return;
+    }
     const form = event.target;
     const rating = parseInt(form.rating.value);
 
@@ -73,12 +80,12 @@ document.querySelector('.comment-form').addEventListener('submit', (event) => {
 
     request('comment.add', {
         quiz_id: quizId,
-        user_id: 1,
+        user_id: userId,
         comment_text: form.comment_text.value,
         rating: rating,
     });
-
-    setTimeout(() => request('comment.get', {}, 'commentList'), 1000);
+    console.log("quizId:", quizId);
+    setTimeout(() => request('comment.get', {quiz_id: quizId}, 'commentList'), 1000);
     form.reset();
     form.rating.value = '0';
     document.querySelectorAll('.rating-star').forEach(star => {
