@@ -1,4 +1,4 @@
-let newUserId = sessionStorage.getItem("userId");
+let newUserId = localStorage.getItem("userId");
 document.getElementById("contactForm").addEventListener("submit", async (event) => {
     event.preventDefault();
 

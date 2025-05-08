@@ -145,7 +145,7 @@ export const Queries: QueriesStructure = {
     add: `INSERT INTO UserScores (score_id, user_id, quiz_id, score, max_possible_score, completed_at)
           VALUES (:score_id, :user_id, :quiz_id, :score, :max_possible_score, CURRENT_TIMESTAMP());`,
     get: `SELECT * FROM UserScores WHERE user_id = :user_id;`,
-    distinctCount: `SELECT DATE(completed_at) AS date, COUNT(DISTINCT user_id) AS distinct_count FROM UserScores WHERE user_id = :user_id GROUP BY DATE(completed_at);`,
+    distinctCount: `SELECT DATE(completed_at) AS date, COUNT(user_id) AS distinct_count FROM UserScores WHERE user_id = :user_id GROUP BY DATE(completed_at);`,
   },
   ticket: {
     add: `INSERT INTO Tickets (user_id, subject, message)

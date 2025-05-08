@@ -1,8 +1,8 @@
 ﻿let userId = 0;
 function storeLogin(login, password, userId)
 {
-    sessionStorage.setItem('userLogin', login.toString());
-    sessionStorage.setItem('userPassword', password.toString());
+    localStorage.setItem('userLogin', login.toString());
+    localStorage.setItem('userPassword', password.toString());
 }
 
 function tryLogin(login, password, callback)
@@ -33,11 +33,11 @@ function logUser(data){
     userId = data[0].user_id;
 
     alert(`Pomyślnie zalogowano jako użytkownik: ${data[0].username}`)
-    sessionStorage.setItem('userId', userId);
+    localStorage.setItem('userId', userId);
     console.log(data, data[0])
     request('user.log', data[0])
 }
 
-const login = sessionStorage.getItem('userLogin');
-const password = sessionStorage.getItem('userPassword');
+const login = localStorage.getItem('userLogin');
+const password = localStorage.getItem('userPassword');
 // if(login && password) ws.addEventListener('open', () => tryLogin(login, password, () => {}));

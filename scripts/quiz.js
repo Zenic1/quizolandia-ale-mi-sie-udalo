@@ -1,4 +1,4 @@
-﻿const userId = sessionStorage.getItem("userId") ? sessionStorage.getItem("userId") : 0;
+﻿const userId = localStorage.getItem("userId") ? localStorage.getItem("userId") : 0;
 function createStarRating(rating) {
     const container = document.createElement('div');
     container.className = 'star-rating';

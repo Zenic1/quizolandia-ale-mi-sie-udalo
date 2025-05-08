@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(queryString);
     const quizId = parseInt(urlParams.get(`quizId`) ?? `0`);
 
-    const userId = parseInt(sessionStorage.getItem("userId") || "0");
+    const userId = parseInt(localStorage.getItem("userId") || "0");
 
 
     if (totalQuestions === 0) {
@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
-// nie dziala szymon naprawi co nie?
 function sendRequest(userId, quizId, correctCount, totalQuestions) {
     request('userScore.add', {
         user_id: userId,

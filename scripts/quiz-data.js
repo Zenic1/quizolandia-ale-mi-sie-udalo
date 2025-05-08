@@ -4,7 +4,7 @@ const quizId = parseInt(urlParams.get("quizId") ?? 0);
 let currQuiz;
 
 // TEMP: zmienic na bez 'quizoldania-ale-mi-sie-udalo
-const copyText = window.location.origin + '/quizolandia-ale-mi-sie-udalo/quizRozw/?quizId=' + quizId
+const copyText = window.location.origin + '/quizRozw/?quizId=' + quizId
 
 console.log(quizId);
 
