@@ -1,0 +1,188 @@
+:root {
+    --ticket-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --ticket-gradient: linear-gradient(135deg, var(--header-color) 0%, var(--second-bg-color) 100%);
+    --ticket-status-open: #4caf50;
+    --ticket-status-closed: #e53935;
+    --ticket-status-pending: #ffb300;
+}
+
+.tickets {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2.5rem;
+    padding: 2.5rem 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.ticket {
+    background: var(--ticket-gradient);
+    color: var(--main-color);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.10);
+
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--ticket-shadow);
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    animation: cardEntrance 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition:
+            transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+            box-shadow 0.3s,
+            opacity 0.3s;
+}
+
+.ticket:hover {
+    transform: translateY(-8px) scale(1.02) rotateZ(0.5deg);
+    box-shadow: 0 16px 32px rgba(46, 44, 47, 0.18);
+    z-index: 2;
+}
+
+.ticket h3 {
+    color: var(--main-color);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+}
+
+.ticket h4 {
+    color: var(--font-color);
+    font-size: 1.05rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+    line-height: 1.5;
+}
+.ticket h3,
+.ticket h4,
+.ticket span,
+.ticket p {
+    color: var(--main-color);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+.ticket span,
+.ticket p {
+    color: var(--font-color);
+    font-size: 0.97rem;
+    margin-bottom: 0.2rem;
+    display: block;
+    word-break: break-all;
+}
+
+.ticket .status {
+    font-weight: 600;
+    padding: 0.2rem 0.8rem;
+    border-radius: 12px;
+    /*display: inline-block;*/
+    margin-bottom: 0.5rem;
+    background: #fff2;
+    letter-spacing: 0.5px;
+}
+
+.ticket .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-top: 0.7rem;
+    font-size: 0.93rem;
+    color: var(--main-color);
+    opacity: 0.92;
+}
+main h2 {
+    text-align: center;
+    font-size: 2.4rem;
+    color: var(--font-color);
+    margin: 2rem 0 2.5rem 0;
+    letter-spacing: 1px;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+.ticket .status.open,
+.ticket .status.closed,
+.ticket .status.pending {
+    font-weight: 700;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+.ticket .meta span {
+    margin-bottom: 0;
+}
+.message {
+    background-color: var(--font-color);
+    border-radius: 8px;
+    margin: 1em 0;
+    padding: 0.8em 1em;
+    color: var(--main-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border-left: 4px solid var(--header-color);
+    word-break: break-word;
+}
+.message .meta {
+    font-size: 0.92em;
+    color: #555;
+    margin-bottom: 0.3em;
+    display: block;
+}
+.message .text {
+    font-size: 1.05em;
+    color: var(--main-color);
+    margin-top: 0.2em;
+    white-space: pre-line;
+}
+.ticket .id {
+    font-size: 0.85rem;
+    color: var(--main-color);
+    font-weight: 500;
+    opacity: 0.7;
+    margin-bottom: 0.2rem;
+}
+.ticket-details{
+    width: 80%;
+}
+section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+@media (max-width: 900px) {
+    .tickets {
+        grid-template-columns: 1fr;
+        padding: 1.2rem 0.5rem;
+        gap: 1.2rem;
+    }
+    .ticket {
+        padding: 1.2rem 1rem;
+    }
+}
+
+@keyframes cardEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes cardExit {
+    to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+        max-height: 0;
+        margin-top: -20px;
+        padding-bottom: 0;
+    }
+}
+
+.ticket.exiting {
+    animation: cardExit 0.3s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    pointer-events: none;
+}

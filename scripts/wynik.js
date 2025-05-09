@@ -19,6 +19,22 @@ document.addEventListener("DOMContentLoaded", () => {
         const percentage = Math.round((correctCount / totalQuestions) * 100);
         document.getElementById("score").textContent = `Poprawne odpowiedzi: ${correctCount} z ${totalQuestions}`;
         document.getElementById("percentage").textContent = `Wynik: ${percentage}%`;
+
+        const wrongQuestions = JSON.parse(localStorage.getItem("wrongQuestions") || "[]");
+        if (wrongQuestions.length > 0) {
+            const wrongSection = document.createElement("div");
+            wrongSection.innerHTML = "<h3>Błędne odpowiedzi:</h3>";
+            wrongQuestions.forEach(q => {
+                const div = document.createElement("div");
+                div.className = "wrong-question";
+                div.innerHTML = `
+                <strong>Pytanie:</strong> ${q.question}<br>
+                <strong>Poprawna odpowiedź:</strong> ${q.correctAnswers ? q.correctAnswers.join(", ") : ""}
+            `;
+                wrongSection.appendChild(div);
+            });
+            document.getElementById("result").appendChild(wrongSection);
+        }
         if (!userId || isNaN(userId) || userId <= 0) {
             console.error("Brak userId lub nieprawidłowy userId.");
             return;

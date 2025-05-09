@@ -93,3 +93,38 @@ textarea{
     transition:none;
     resize: vertical;
 }
+#ticketsContent {
+    background: #fff3;
+    border-radius: 10px;
+    margin: 2em auto;
+    padding: 2em 2em 1em 2em;
+    max-width: 700px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.user-tickets .ticket {
+    background: #f7f7fa;
+    border-radius: 8px;
+    margin-bottom: 1.2em;
+    padding: 1em 1.2em;
+    color: var(--main-color);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--header-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+}
+.user-tickets .ticket strong {
+    font-size: 1.1em;
+    color: var(--main-color);
+}
+.user-tickets .ticket a {
+    color: var(--header-color);
+    font-weight: 600;
+    margin-top: 0.3em;
+    text-decoration: underline;
+    align-self: flex-start;
+}
+.user-tickets .ticket span {
+    font-size: 0.97em;
+    color: #555;
+}

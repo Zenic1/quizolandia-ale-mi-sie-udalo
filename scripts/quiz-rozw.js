@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+    let wrongQuestions = [];
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const quizId = parseInt(urlParams.get("quizId") ?? 0);
@@ -118,6 +120,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (isCorrect) {
             correctAnswersCount++;
+        }else{
+            wrongQuestions.push({
+                question: currentQuestion.question,
+                correctAnswers: currentQuestion.correctAnswers.map(index => currentQuestion.answers[index].text),
+                userAnswer: selectedAnswers.map(index => currentQuestion.answers[index].text)
+            });
         }
         currentQuestionIndex++;
         if (currentQuestionIndex < quizData.length) {
@@ -125,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             localStorage.setItem("correctAnswersCount", correctAnswersCount.toString());
             localStorage.setItem("totalQuestions", quizData.length.toString());
+            localStorage.setItem("wrongQuestions", JSON.stringify(wrongQuestions));
             window.location.href = "../wynik/?quizId=" + quizId;
         }
     });

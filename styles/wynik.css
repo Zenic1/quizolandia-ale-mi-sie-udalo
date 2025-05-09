@@ -34,6 +34,17 @@
     background-color: var(--main-color);
     color: var(--font-color);
 }
+.wrong-question {
+    background: #ffeaea;
+    border-left: 4px solid #e74c3c;
+    margin: 1em 0;
+    padding: 1em;
+    border-radius: 6px;
+    color: #c0392b;
+}
+h3{
+    margin-top: 1rem;
+}
 @media (max-width: 768px) {
     #result {
         margin: 2rem 1rem;

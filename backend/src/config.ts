@@ -136,6 +136,7 @@ export const Queries: QueriesStructure = {
     getFromLogin: `SELECT * FROM Users where username like :username;`,
     getFromEmail: `SELECT * FROM Users where email like :email;`,
     log: `Update Users set last_login = CURRENT_TIMESTAMP() WHERE user_id = :user_id;`,
+    isAdmin: `SELECT is_admin FROM Users WHERE user_id = :user_id;`,
   },
   comment: {
     get: `SELECT * FROM QuizComments where quiz_id = :quiz_id;`,
@@ -150,7 +151,13 @@ export const Queries: QueriesStructure = {
   ticket: {
     add: `INSERT INTO Tickets (user_id, subject, message)
           values (:user_id, :subject, :message)`,
-    get: ""
+    get: `SELECT Tickets.*, u.username from Tickets JOIN Users u ON Tickets.user_id = u.user_id;`,
+    getById: `SELECT t.*, u.username FROM Tickets t JOIN Users u ON t.user_id = u.user_id WHERE t.ticket_id = :ticket_id;`,
+    update: `UPDATE Tickets SET status = :status WHERE ticket_id = :ticket_id;`,
+  },
+  ticketMessage: {
+    add: `INSERT INTO TicketMessages (ticket_id, sender_id, message) VALUES (:ticket_id, :sender_id, :message);`,
+    get: `SELECT m.*, u.username, u.is_admin FROM TicketMessages m JOIN Users u ON m.sender_id = u.user_id WHERE m.ticket_id = :ticket_id ORDER BY m.sent_at ASC;`
   }
 };
 

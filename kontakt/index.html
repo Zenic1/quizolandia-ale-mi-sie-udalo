@@ -17,6 +17,11 @@
         <button>Wyloguj się</button>
     </div>
 </nav>
+<div class="tabs">
+    <button id="tabContact">Kontakt</button>
+    <button id="tabTickets">Obecne sprawy</button>
+</div>
+<div id="contactContent">
     <form action="../" id="contactForm" method="POST">
         <h2>Kontakt</h2>
         <label for="powod">Powód kontaktu:</label><br>
@@ -25,6 +30,11 @@
         <textarea name="tresc" id="tresc" cols="30" rows="10"></textarea>
         <div class="center">   <button class="button-confirm">Wyślij</button></div>
       </form>
+</div>
+<div id="ticketsContent" style="display:none;">
+    <h3>Twoje zgłoszenia</h3>
+    <div class="user-tickets"></div>
+</div>
 <footer>
     <p>&copy; Quizolandia Team 2025</p>
 </footer>

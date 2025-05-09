@@ -29,7 +29,7 @@ h2{
   padding: 1rem;
   border-radius: 15px;
   width: 50%;
-  height: 50%;
+  height: fit-content;
 }
 .ikona {
   width: 3em;
