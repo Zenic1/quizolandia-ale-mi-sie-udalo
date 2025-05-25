@@ -19,7 +19,8 @@ nav {
     padding: 1rem 2rem;
     box-shadow: var(--shadow);
     border-bottom: 2px solid var(--second-bg-color);
-    position: sticky;
+    position: fixed;
+    width: 100%;
     top: 0;
     z-index: 1000;
     display: flex;
@@ -89,24 +90,13 @@ body {
 a{
     text-decoration: none;
 }
-footer {
-    background: var(--header-color);
-    padding: 1.5rem;
-    text-align: center;
-    margin-top: 4rem;
-    border-top: 2px solid var(--second-bg-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-footer>p{
-    color: var(--font-color);
-    font-size: 24px;
-}
-
 
 nav button:hover {
     transform: scale(1.05);
+}
+#registerButton:hover{
+    background-color: var(--main-color)!important;
+    color: var(--font-color)!important;
 }
 html, body {
     height: 100%;
@@ -114,10 +104,96 @@ html, body {
     display: flex;
     flex-direction: column;
 }
-
+body {
+    min-height: 100vh;
+}
 main {
     flex: 1;
+    padding-bottom: 3rem;
+
 }
+main, .tabs, #register {
+    margin-top: 92px;
+}
+footer {
+    flex-shrink: 0;
+    background: var(--main-color);
+    color: var(--font-color);
+    border-top: 3px solid var(--header-color);
+    padding: 2rem 1rem;
+    width: 100%;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.footer-section h3 {
+    color: var(--header-color);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 50px;
+    height: 2px;
+    background-color: var(--header-color);
+}
+
+.footer-section p, .footer-section a {
+    color: #ccc;
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+.footer-section a {
+    display: block;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: var(--font-color);
+    transform: translateX(5px);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-icons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.social-icons a:hover {
+    background-color: var(--header-color);
+    transform: translateY(-3px);
+}
+
 @media screen and (max-width: 768px) {
     nav {
         flex-direction: column;
@@ -127,5 +203,11 @@ main {
 
     nav h1 {
         font-size: 2rem;
+    }
+    main, .tabs, #register{
+        margin-top: 145px;
+    }
+    .footer-content {
+        grid-template-columns: 1fr;
     }
 }

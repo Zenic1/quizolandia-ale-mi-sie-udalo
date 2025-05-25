@@ -10,9 +10,9 @@ if (urlUserId) {
                     document.querySelector('.hidden').style.display = 'block';
                 }
                 const user = users[0];
-                document.querySelector('.profil img.avatar').src = user.avatar_url || '../assets/images/default.png';
-                document.querySelector('.profil p strong').textContent = 'Nick:';
-                document.querySelector('.profil p').append(` ${user.username}`);
+                document.querySelector('.profil img.avatar').src = user.avatar_url || '../assets/images/icon.png';
+                document.querySelector('.profil p strong').textContent = 'Nick: ';
+                document.querySelector('.profil p').innerHTML += user.username;
             });
         request('userScore.distinctCount', { user_id: urlUserId }, 'profileUserScores')
             .then(scores => {

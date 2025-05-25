@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentQuestion.questionType === 'open') {
             const openAnswer = document.getElementById('open-answer').value;
-            isCorrect = openAnswer.trim().length > 0; // Zakładamy, że każda odpowiedź jest poprawna, jeśli nie jest pusta
+            isCorrect = openAnswer.trim().length > 0;
         } else {
             isCorrect = currentQuestion.questionType === 'multiple'
                 ? selectedAnswers.sort().toString() === currentQuestion.correctAnswers.sort().toString()

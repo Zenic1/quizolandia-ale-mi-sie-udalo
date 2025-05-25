@@ -338,7 +338,133 @@ textarea::placeholder{
         flex-wrap: wrap;
     }
 }
+.top-solvers-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background-color: var(--second-bg-color);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
 
+.top-solvers-section h3 {
+    color: var(--main-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.solvers-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.solver-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 12px;
+    background-color: var(--font-color);
+    width: 140px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.solver-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.solver-card.gold {
+    order: 2;
+    transform: scale(1.1);
+    border: 2px solid #FFD700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.solver-card.silver {
+    order: 1;
+    border: 2px solid #C0C0C0;
+}
+
+.solver-card.bronze {
+    order: 3;
+    border: 2px solid #CD7F32;
+}
+
+.solver-card.gold:hover {
+    transform: translateY(-5px) scale(1.1);
+}
+
+.solver-avatar {
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.solver-avatar img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--main-color);
+}
+
+.solver-card.gold .solver-avatar img {
+    width: 80px;
+    height: 80px;
+    border: 3px solid #FFD700;
+}
+
+.crown {
+    position: absolute;
+    top: -15px;
+    right: -5px;
+    font-size: 24px;
+    transform: rotate(15deg);
+}
+
+.solver-info {
+    text-align: center;
+}
+
+.solver-info h4 {
+    color: var(--main-color);
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.solver-info .score {
+    font-weight: bold;
+    color: var(--header-color);
+    margin: 0.2rem 0;
+}
+
+.solver-info .time {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 0.2rem;
+}
+
+@media (max-width: 768px) {
+    .solvers-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .solver-card {
+        width: 100%;
+        max-width: 200px;
+        order: initial !important;
+    }
+
+    .solver-card.gold {
+        order: 1 !important;
+    }
+}
 @font-face {
     font-family: 'Font Awesome 5 Free';
     font-style: normal;

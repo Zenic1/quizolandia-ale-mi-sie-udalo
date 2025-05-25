@@ -75,7 +75,6 @@ textarea.open-answer {
     font-family: Roboto, Inter, Cantarell, Arial, sans-serif;;
 }
 
-/* Responsywność */
 @media (max-width: 768px) {
     .answer-button {
         flex: 1 1 100%;
