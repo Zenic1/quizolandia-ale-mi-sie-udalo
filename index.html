@@ -1,29 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizolandia - Platforma Quizowa</title>
+    <link rel="stylesheet" href="styles/global.css">
+    <link rel="stylesheet" href="styles/home.css">
 </head>
 <body>
-    <ul>
-        <li>
-            <a href="login">login</a>
-        </li>
-        <li>
-            <a href="profile">profile</a>
-        </li>
-        <li>
-            <a href="quiz">quiz</a>
-        </li>
-        <li>
-            <a href="register">register</a>
-        </li>
-        <li>
-            <a href="search">search</a>
-        </li>
-        <li>
-            <a href="kontakt">kontakt</a>
-        </li>
-    </ul>
+<nav>
+    <a href="./"><h1>Quizolandia</h1></a>
+    <div>
+        <img src="/assets/images/user.svg" alt="użytkownik">
+        <a href="/search"><img src="assets/images/search.png" alt="wyszukiwanie"></a>
+        <button>Wyloguj się</button>
+    </div>
+</nav>
+
+<main>
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Witaj w <span>Quizolandii</span></h2>
+            <p>Rozwiązuj quizy, sprawdzaj swoją wiedzę i rywalizuj z innymi!</p>
+            <div class="hero-buttons">
+                <a href="search/" class="button primary">Przeglądaj quizy</a>
+                <a href="register/" class="button secondary">Dołącz do nas</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="assets/images/quiz-hero.png" alt="Quizolandia ilustracja">
+        </div>
+    </section>
+
+    <section class="popular-quizzes">
+        <h2>Popularne quizy</h2>
+        <div class="quizzes-grid">
+        </div>
+        <a href="search/" class="button view-more">Zobacz więcej quizów</a>
+    </section>
+
+    <section class="ranking-section">
+        <div class="ranking-content">
+            <h2>Ranking użytkowników</h2>
+            <p>Sprawdź kto jest najlepszy i dołącz do rywalizacji!</p>
+            <a href="ranking/" class="button primary">Zobacz ranking</a>
+        </div>
+        <div class="ranking-preview">
+            <div class="podium-container">
+                <div class="podium drugi">
+                    <span>2</span>
+                    <img src="assets/images/avatar2.png" alt="Drugie miejsce">
+                    <p>Gracz #2</p>
+                </div>
+                <div class="podium pierwszy">
+                    <span>1</span>
+                    <img src="assets/images/avatar1.png" alt="Pierwsze miejsce">
+                    <p>Gracz #1</p>
+                </div>
+                <div class="podium trzeci">
+                    <span>3</span>
+                    <img src="assets/images/avatar3.png" alt="Trzecie miejsce">
+                    <p>Gracz #3</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="category-section">
+        <h2>Nowa Kategoria: <span id="category-name">Historia</span></h2>
+        <div class="category-quizzes">
+        </div>
+        <a href="search/" class="button view-more">Odkryj więcej kategorii</a>
+    </section>
+
+    <section class="contact-section">
+        <h2>Masz pytanie lub sugestię?</h2>
+        <a href="kontakt/" class="big-button">Jeśli masz jakąś prośbę, napisz do nas!</a>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>O Quizolandii</h3>
+            <p>Platforma edukacyjna oferująca interaktywne quizy i zadania wspomagające naukę.</p>
+            <div class="social-icons">
+                <a href="#"><img src="/assets/images/facebook.png" alt="Facebook"></a>
+                <a href="#"><img src="/assets/images/twitter.png" alt="Twitter"></a>
+                <a href="#"><img src="/assets/images/instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h3>Przydatne linki</h3>
+            <a href="/">Strona główna</a>
+            <a href="/search/">Przeglądaj quizy</a>
+            <a href="/ranking/">Ranking</a>
+            <a href="/kontakt/">Kontakt</a>
+            <a href="/login">Logowanie</a>
+            <a href="/register/">Rejestracja</a>
+        </div>
+
+        <div class="footer-section">
+            <h3>Kontakt</h3>
+            <p>Email: kontakt@quizolandia.pl</p>
+            <p>Tel: +48 123 456 789</p>
+            <p>Adres: ul. Edukacyjna 15, Warszawa</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; Quizolandia Team 2025 | Wszystkie prawa zastrzeżone</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.7/rxjs.umd.min.js"></script>
+<script src="scripts/data.js"></script>
+<script src="scripts/autoLogger.js"></script>
+<script src="scripts/home.js"></script>
 </body>
 </html>
