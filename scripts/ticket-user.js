@@ -2,24 +2,31 @@ const params = new URLSearchParams(window.location.search);
 const ticketId = params.get("ticketId");
 const ticketContainer = document.querySelector("main .ticket-details");
 
-userId = parseInt(localStorage.getItem('userId')) ?? 0;
-if (!userId || userId === 0) {
+userId = window.userId
+if (!isLoggedIn()) {
     alert("Zaloguj się!");
     window.location = "/login";
 }
 
 ws.addEventListener("open", () => {
-    request("ticket.getById", { ticket_id: ticketId }, "ticketList").then(tickets => {
-        const ticket = tickets.find(t => t.ticket_id == ticketId);
-        if (!ticket) {
-            ticketContainer.innerHTML = "<p>Nie znaleziono zgłoszenia.</p>";
-            return;
-        }
-        if (ticket.user_id !== userId) {
+    hasTicketAccess(ticketId).then(hasAccess => {
+        if (!hasAccess) {
             ticketContainer.innerHTML = "<p>Nie masz dostępu do tej sprawy.</p>";
             return;
         }
-        renderTicketDetails(ticket);
+
+        request("ticket.getById", { ticket_id: ticketId }, "ticketList").then(tickets => {
+            const ticket = tickets.find(t => t.ticket_id == ticketId);
+            if (!ticket) {
+                ticketContainer.innerHTML = "<p>Nie znaleziono zgłoszenia.</p>";
+                return;
+            }
+            renderTicketDetails(ticket);
+        }).catch(err => {
+            ticketContainer.innerHTML = "<p>Błąd podczas pobierania danych zgłoszenia.</p>";
+        });
+    }).catch(error => {
+        ticketContainer.innerHTML = `<p>Błąd: ${error}</p>`;
     });
 });
 
@@ -49,7 +56,35 @@ if (replyForm) {
         }
     });
 }
+function hasTicketAccess(ticketId) {
+    return new Promise((resolve, reject) => {
+        getValidUserId().then(userId => {
+            if (!userId) {
+                reject("Brak identyfikatora użytkownika");
+                return;
+            }
 
+            request("ticket.getById", { ticket_id: ticketId }, "ticketAccess").then(tickets => {
+                const ticket = tickets.find(t => t.ticket_id == ticketId);
+                if (!ticket) {
+                    reject("Nie znaleziono zgłoszenia");
+                    return;
+                }
+
+                if (ticket.user_id === userId) {
+                    resolve(true);
+                    return;
+                }else{
+                    reject("Nie masz dostępu do tej sprawy");
+                    return;
+                }
+
+            }).catch(err => {
+                reject("Błąd podczas pobierania danych zgłoszenia");
+            });
+        });
+    });
+}
 function renderTicketDetails(ticket) {
     const isClosed = ticket.status === "closed";
     ticketContainer.innerHTML = `

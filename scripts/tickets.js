@@ -1,20 +1,17 @@
-userId = parseInt(localStorage.getItem('userId')) ?? 0;
-if (userId && userId !== 0) {
-    ws.addEventListener('open', () => {
-        request('user.isAdmin', { user_id: userId }, 'adminResponse')
-        .then(res => {
-            if(res[0].is_admin === 1) {
-                console.log(userId + " is the admin");
-                    request("ticket.get", {}, "ticketList").then(tickets => {
-                        generateTicketHtml(tickets);
-                    });
-            }else{
-                alert("Nie masz uprawnień do tej strony!")
-                window.location = "/"
-                console.log(userId + " is not the admin");
-            }
-        })
-    })
+if (isLoggedIn()) {
+    isAdmin().then(isAdminUser => {
+        if (isAdminUser) {
+            request("ticket.get", {}, "ticketList").then(tickets => {
+                generateTicketHtml(tickets);
+            });
+        } else {
+            alert("Nie masz uprawnień administracyjnych");
+            window.location = "/";
+        }
+    }).catch(error => {
+        alert("Wystąpił błąd: " + error);
+        window.location = "/login";
+    });
 
     function generateTicketHtml(tickets) {
         const ticketContainer = document.querySelector(".tickets");
@@ -48,7 +45,7 @@ if (userId && userId !== 0) {
         link.href = `/admin/tickets/ticket/?ticketId=${ticket.ticket_id}`;
         link.classList.add("ticket");
         link.dataset.ticketId = ticket.ticket_id;
-        link.style.textDecoration = "none"; // usunięcie podkreślenia
+        link.style.textDecoration = "none";
 
         const id = document.createElement("span");
         id.textContent = `ID: ${ticket.ticket_id}`;
@@ -79,7 +76,7 @@ if (userId && userId !== 0) {
 
         return link;
     }
-}else{
-    alert("Zaloguj się!")
-    window.location = "/login"
+} else {
+    alert("Zaloguj się!");
+    window.location = "/login";
 }

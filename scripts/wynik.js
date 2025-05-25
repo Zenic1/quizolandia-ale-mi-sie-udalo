@@ -6,9 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(queryString);
     const quizId = parseInt(urlParams.get(`quizId`) ?? `0`);
 
-    const userId = parseInt(localStorage.getItem("userId") || "0");
-
-
     if (totalQuestions === 0) {
         document.getElementById("score").textContent = "Nie rozwiązałeś ostatnio żadnego quizu.";
         document.getElementById("percentage").textContent = "";
@@ -35,29 +32,35 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             document.getElementById("result").appendChild(wrongSection);
         }
-        if (!userId || isNaN(userId) || userId <= 0) {
-            console.error("Brak userId lub nieprawidłowy userId.");
-            return;
-        }
+
         if (ws.readyState === WebSocket.OPEN) {
-            sendRequest(userId, quizId, correctCount, totalQuestions);
+            sendRequest(quizId, correctCount, totalQuestions);
         } else {
             ws.addEventListener("open", () => {
-                sendRequest(userId, quizId, correctCount, totalQuestions);
+                sendRequest(quizId, correctCount, totalQuestions);
             });
         }
     }
 });
-function sendRequest(userId, quizId, correctCount, totalQuestions) {
-    request('userScore.add', {
-        user_id: userId,
-        quiz_id: quizId,
-        score: correctCount,
-        max_possible_score: totalQuestions
-    }, "scoreResponse").then(() => {
-        console.log("Wynik zapisany w bazie");
+function sendRequest(quizId, correctCount, totalQuestions) {
+    getValidUserId().then(userId => {
+        if (!userId) {
+            console.error("Nie można uzyskać prawidłowego identyfikatora użytkownika.");
+            return;
+        }
+
+        request('userScore.add', {
+            user_id: userId,
+            quiz_id: quizId,
+            score: correctCount,
+            max_possible_score: totalQuestions
+        }, "scoreResponse").then(() => {
+            console.log("Wynik zapisany w bazie");
+        }).catch(err => {
+            console.log("Błąd zapisu", err);
+        });
     }).catch(err => {
-        console.log("Błąd zapisu", err);
+        console.error("Błąd podczas pobierania identyfikatora użytkownika:", err);
     });
 }
 function goBack(){

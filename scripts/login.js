@@ -15,9 +15,5 @@ function getUsers(event){
     form.text.value.toString().match(regEx) ? storeLogin(user.email, user.password) : storeLogin(user.username, user.password);
 
     console.log(user)
-
-
-
-    request(method , user, 'userLoginTest').then((data) => logUser(data))
+    request(method, user, 'userLogin').then((data) => logUser(data, true))
 }
-// if(login && password) ws.addEventListener('open', () => tryLogin(login, password, () => {window.location.href = '../search/'}));

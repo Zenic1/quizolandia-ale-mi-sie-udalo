@@ -7,29 +7,28 @@ if (!ticketId) {
     window.location = "/admin/tickets/";
 }
 
-userId = parseInt(localStorage.getItem('userId')) ?? 0;
-if (!userId || userId === 0) {
+if (!isLoggedIn()) {
     alert("Zaloguj się!");
     window.location = "/login";
 }
 
-ws.addEventListener("open", () => {
-    request("user.isAdmin", { user_id: userId }, "adminResponse")
-        .then(res => {
-            if (res[0].is_admin === 1) {
-                request("ticket.getById", {ticket_id : ticketId}, "ticketList").then(tickets => {
-                    const ticket = tickets.find(t => t.ticket_id == ticketId);
-                    if (!ticket) {
-                        ticketContainer.innerHTML = "<p>Nie znaleziono zgłoszenia.</p>";
-                        return;
-                    }
-                    renderTicketDetails(ticket);
-                });
-            } else {
-                alert("Nie masz uprawnień do tej strony!");
-                window.location = "/";
+isAdmin().then(isAdminUser => {
+    if (isAdminUser) {
+        request("ticket.getById", {ticket_id : ticketId}, "ticketList").then(tickets => {
+            const ticket = tickets.find(t => t.ticket_id == ticketId);
+            if (!ticket) {
+                ticketContainer.innerHTML = "<p>Nie znaleziono zgłoszenia.</p>";
+                return;
             }
+            renderTicketDetails(ticket);
         });
+    } else {
+        alert("Nie masz uprawnień do tej strony!");
+        window.location = "/";
+    }
+}).catch(error => {
+    alert("Wystąpił błąd: " + error);
+    window.location = "/login";
 });
 
 function renderTicketDetails(ticket) {
