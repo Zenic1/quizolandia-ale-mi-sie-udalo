@@ -15,15 +15,39 @@ function fetchData() {
   console.log(searchQuery, categoryFilter);
   request("quiz.getWithCategory", {}, "quizList");
   request("category.countOfQuizzes", {}, "categoryList");
+  request("quiz.getRating", {}, "quizRatings");
 }
 
 ws.onopen = fetchData;
 
 dataChange.subscribe((data) => {
-  if (data === "quizList") filterSearch(cachedData.get("quizList"));
+  if (data === "quizList" || data === "quizRatings") {
+    if (cachedData.has("quizList") && cachedData.has("quizRatings")) {
+      applyRatingsToQuizzes();
+      filterSearch(cachedData.get("quizList"));
+    }
+  }
   else if (data === "categoryList")
     generateCategoryHTML(cachedData.get("categoryList"));
 });
+
+function applyRatingsToQuizzes() {
+  const quizzes = cachedData.get("quizList");
+  const quizRatings = cachedData.get("quizRatings");
+
+  const ratingsMap = {};
+  if (quizRatings && quizRatings.length > 0) {
+    quizRatings.forEach(item => {
+      ratingsMap[item.quiz_id] = parseFloat(item.rating).toFixed(1);
+    });
+  }
+
+  quizzes.forEach(quiz => {
+    quiz.rating = ratingsMap[quiz.quiz_id] || '0.0';
+  });
+
+  cachedData.set("quizList", quizzes);
+}
 
 function filterSearch(quizzes) {
   if (!(quizzes.length > 0)) return "nie ma";
@@ -44,8 +68,6 @@ function changeSearch(text) {
   searchQuery = text;
   filterSearch(cachedData.get("quizList"));
 }
-
-console.log(searchQuery);
 
 function generateSearchHtml(quizzes) {
   const quizContainer = document.getElementsByClassName("container")[0];
@@ -70,7 +92,6 @@ function generateSearchHtml(quizzes) {
     const child = createQuizElement(quiz);
     quizContainer.appendChild(child);
 
-    // Stagger animations for new items
     child.style.animationDelay = `${index * 50}ms`;
   });
 }
@@ -79,19 +100,49 @@ function createQuizElement(quiz) {
   const child = document.createElement("a");
   child.href = `../quiz/?quizId=${quiz.quiz_id}`;
   child.classList.add("quiz");
+
   let image = document.createElement("img");
-  image.src = quiz.cover_url;
+  image.src = quiz.cover_url || '../assets/images/quiz-placeholder.png';
   image.alt = "Zdjęcie opisujące quiz";
   child.appendChild(image);
+
   let text = document.createElement("p");
   text.innerHTML = quiz.title;
   child.appendChild(text);
-  let difficulty = document.createElement("span");
-  difficulty.innerHTML = quiz.difficulty;
-  child.appendChild(difficulty);
+
+  let details = document.createElement("div");
+  details.classList.add("quiz-details");
+
+  let rating = document.createElement("span");
+  rating.classList.add("rating");
+  rating.innerHTML = `${generateStars(parseFloat(quiz.rating))} ${quiz.rating}`;
+  details.appendChild(rating);
+
+  child.appendChild(details);
+
   return child;
 }
 
+function generateStars(rating) {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating - fullStars >= 0.5;
+  let stars = '';
+
+  for (let i = 0; i < fullStars; i++) {
+    stars += '★';
+  }
+
+  if (hasHalfStar) {
+    stars += '⯨';
+  }
+
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  for (let i = 0; i < emptyStars; i++) {
+    stars += '☆';
+  }
+
+  return stars;
+}
 
 function showLoadingState() {
   const container = document.querySelector('.container');
@@ -112,7 +163,6 @@ function generateOptionHtml(title, count, value, disabled = false) {
   return object;
 }
 
-
 function generateCategoryHTML(categories) {
   categoryDropDown.innerHTML = "";
   let wybierz = generateOptionHtml('Kategoria', 0, 0, true)
@@ -121,16 +171,14 @@ function generateCategoryHTML(categories) {
   categoryDropDown.appendChild(wszystkie);
   categories.forEach((category) => {
     categoryDropDown.appendChild(
-      generateOptionHtml(
-        category.category,
-        category.quiz_count,
-        category.category_id
-      )
+        generateOptionHtml(
+            category.category,
+            category.quiz_count,
+            category.category_id
+        )
     );
   });
 }
-
-
 
 function changeCategory(value) {
   console.log(`Changed category id to : ${value}`);
@@ -141,9 +189,6 @@ function changeCategory(value) {
 function capitalFirstLetter(text) {
   return `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
 }
-
-// setInterval(fetchData, 10000);
-
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {

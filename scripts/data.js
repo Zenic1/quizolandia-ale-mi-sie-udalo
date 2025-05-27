@@ -56,10 +56,9 @@ function request(method, params = {}, responseVar = "N/A") {
             const data = JSON.parse(event.data);
 
             const { variable, value } = data.params;
-            console.log('WebSocket message received:', value, variable, event.data, data);
+            // console.log('WebSocket message received:', value, variable, event.data, data);
             if(variable === responseVar)
             {
-                console.log('yes geeked ah')
                 resolve(value);
             }
         })

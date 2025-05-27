@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rozwiązywanie | Quizolandia</title>
+  <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/quizRozw.css">
+</head>
+<body>
+<nav>
+  <a href="/"><h1>Quizolandia</h1></a>
+  <div>
+    <img src="/assets/images/user.svg" alt="użytkownik">
+    <a href="/search"><img src="/assets/images/search.png" alt="wyszukiwanie"></a>
+    <button>Wyloguj się</button>
+  </div>
+</nav>
+<main>
+  <div class="center" id="quiz-container">
+  </div>
+  <div class="center">
+    <button id="hint"><img src="../assets/images/bulb.svg" alt="Żarówka"></button>
+    <button id="next">NASTĘPNE PYTANIE</button>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>O Quizolandii</h3>
+      <p>Platforma edukacyjna oferująca interaktywne quizy i zadania wspomagające naukę.</p>
+      <div class="social-icons">
+        <a href="#"><img src="/assets/images/facebook.png" alt="Facebook"></a>
+        <a href="#"><img src="/assets/images/twitter.png" alt="Twitter"></a>
+        <a href="#"><img src="/assets/images/instagram.png" alt="Instagram"></a>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <h3>Przydatne linki</h3>
+      <a href="/">Strona główna</a>
+      <a href="/search/">Przeglądaj quizy</a>
+      <a href="/ranking/">Ranking</a>
+      <a href="/kontakt/">Kontakt</a>
+      <a href="/login">Logowanie</a>
+      <a href="/register/">Rejestracja</a>
+    </div>
+
+    <div class="footer-section">
+      <h3>Kontakt</h3>
+      <p>Email: kontakt@quizolandia.pl</p>
+      <p>Tel: +48 123 456 789</p>
+      <p>Adres: ul. Edukacyjna 15, Warszawa</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; Quizolandia Team 2025 | Wszystkie prawa zastrzeżone</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.7/rxjs.umd.min.js"></script>
+<script src="../scripts/data.js"></script>
+<script src="../scripts/autoLogger.js"></script>
+<script src="../scripts/quiz-rozw.js"></script>
+</body>
+</html>

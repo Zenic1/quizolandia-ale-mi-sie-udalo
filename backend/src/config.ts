@@ -1,3 +1,5 @@
+// noinspection SqlNoDataSourceInspection
+
 import "dotenv/config";
 import winston from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
@@ -20,8 +22,8 @@ import { PoolOptions } from "mysql2/promise";
 export const logger = winston.createLogger({
   level: "info",
   format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
+      winston.format.timestamp(),
+      winston.format.json()
   ),
   transports: [
     new winston.transports.Console(),
@@ -32,8 +34,8 @@ export const logger = winston.createLogger({
       maxSize: "20m",
       maxFiles: "14d",
       format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json()
+          winston.format.timestamp(),
+          winston.format.json()
       ),
       options: { flags: "a" },
     }),
@@ -92,17 +94,19 @@ export const dbConfig: PoolOptions = {
  * */
 export const Queries: QueriesStructure = {
   quiz: {
-    get: `SELECT * FROM Quizzes`,
+    get: `SELECT * FROM Quizzes where quiz_id = :quiz_id`,
     getWithCategory: `SELECT q.quiz_id, q.title, c.name AS category, c.category_id, q.cover_url, q.difficulty FROM Quizzes q JOIN Categories c ON q.category_id = c.category_id;`,
     searchWithTitle: `SELECT * FROM Quizzes WHERE title LIKE CONCAT('%', :title, '%');`,
-    getTopThree: `SELECT u.username, s.score, s.max_possible_score, s.completed_at FROM UserScores s JOIN Users u ON s.user_id = u.user_id WHERE s.quiz_id = :quiz_id ORDER BY s.score DESC LIMIT 3;`,
+    getTopThree: `SELECT u.username, s.score, s.max_possible_score, u.avatar_url, u.user_id FROM UserScores s JOIN Users u ON s.user_id = u.user_id WHERE s.quiz_id = :quiz_id ORDER BY s.score DESC LIMIT 3;`,
     getAvgScore: `SELECT q.title, ROUND(AVG(s.score / s.max_possible_score * 100), 2) AS avg_percent FROM UserScores s JOIN Quizzes q ON s.quiz_id = q.quiz_id GROUP BY s.quiz_id;`,
     getNumberOfDistinctAttempts: `SELECT q.title, COUNT(DISTINCT s.user_id) AS users_attempted FROM UserScores s JOIN Quizzes q ON s.quiz_id = q.quiz_id GROUP BY s.quiz_id;`,
-    getFullInfo: `SELECT q.question_id, q.question_text, q.question_type, a.answer_id, a.answer_text, a.is_correct FROM Questions q LEFT JOIN Answers a ON q.question_id = a.question_id WHERE q.quiz_id = :quiz_id ORDER BY q.question_order;`,
+    getFullInfo: `SELECT q.question_id, q.question_text, q.question_type, q.hint, a.answer_id, a.answer_text, a.is_correct FROM Questions q LEFT JOIN Answers a ON q.question_id = a.question_id WHERE q.quiz_id = :quiz_id ORDER BY q.question_order;`,
     delete: `DELETE FROM Quizzes WHERE quiz_id = :quiz_id;`,
     distinctQuestion: `SELECT distinct q.question_id from Questions q where q.quiz_id = :quiz_id`,
     update: `UPDATE Quizzes SET title = :title, description = :description, score = :score, cover_url = :cover_url, category_id = :category_id, author_id = :author_id, created_at = :created_at, time_limit = :time_limit, difficulty = :difficulty, is_public = :is_public WHERE quiz_id = :quiz_id;`,
-    add: `INSERT INTO Quizzes (title, description, score, cover_url, category_id, author_id, created_at, time_limit, difficulty, is_public) values (:title, :description, :score, :cover_url, :category_id, :author_id, :created_at, :time_limit, :difficulty, :is_public);`
+    add: `INSERT INTO Quizzes (title, description, score, cover_url, category_id, author_id, created_at, time_limit, difficulty, is_public) values (:title, :description, :score, :cover_url, :category_id, :author_id, :created_at, :time_limit, :difficulty, :is_public);`,
+    getTopTen: `SELECT u.username, SUM(s.score) AS total_score, u.avatar_url, u.user_id FROM Users u JOIN UserScores s ON u.user_id = s.user_id GROUP BY u.user_id ORDER BY total_score DESC LIMIT 10;`,
+    getRating: `SELECT quiz_id, AVG(rating) as rating FROM QuizComments GROUP BY quiz_id;`,
   },
   category: {
     get: `SELECT * FROM Categories`,
@@ -128,6 +132,7 @@ export const Queries: QueriesStructure = {
   },
   user: {
     get: `SELECT * FROM Users`,
+    getMinimum: `SELECT user_id, username, avatar_url FROM Users WHERE user_id IN (:user_ids);`,
     getTopTen: `SELECT u.username, SUM(s.score) AS total_score FROM Users u JOIN UserScores s ON u.user_id = s.user_id GROUP BY u.user_id ORDER BY total_score DESC LIMIT 10;`,
     getQuizHistory: `SELECT q.title, s.score, s.max_possible_score, s.completed_at FROM UserScores s JOIN Quizzes q ON s.quiz_id = q.quiz_id WHERE s.user_id = :user_id ORDER BY s.completed_at DESC;`,
     delete: `DELETE FROM Users where user_id = :user_id`,
@@ -136,10 +141,28 @@ export const Queries: QueriesStructure = {
     getFromLogin: `SELECT * FROM Users where username like :username;`,
     getFromEmail: `SELECT * FROM Users where email like :email;`,
     log: `Update Users set last_login = CURRENT_TIMESTAMP() WHERE user_id = :user_id;`,
+    isAdmin: `SELECT is_admin FROM Users WHERE user_id = :user_id;`,
   },
   comment: {
-    get: `SELECT * FROM QuizComments`,
+    get: `SELECT * FROM QuizComments where quiz_id = :quiz_id;`,
     add: `INSERT INTO QuizComments (quiz_id, user_id, comment_text, rating, created_at) VALUES (:quiz_id, :user_id, :comment_text, :rating, CURRENT_TIMESTAMP())`
+  },
+  userScore: {
+    add: `INSERT INTO UserScores (score_id, user_id, quiz_id, score, max_possible_score, completed_at)
+          VALUES (:score_id, :user_id, :quiz_id, :score, :max_possible_score, CURRENT_TIMESTAMP());`,
+    get: `SELECT * FROM UserScores WHERE user_id = :user_id;`,
+    distinctCount: `SELECT DATE(completed_at) AS date, COUNT(user_id) AS distinct_count FROM UserScores WHERE user_id = :user_id GROUP BY DATE(completed_at);`,
+  },
+  ticket: {
+    add: `INSERT INTO Tickets (user_id, subject, message)
+          values (:user_id, :subject, :message)`,
+    get: `SELECT Tickets.*, u.username from Tickets JOIN Users u ON Tickets.user_id = u.user_id;`,
+    getById: `SELECT t.*, u.username FROM Tickets t JOIN Users u ON t.user_id = u.user_id WHERE t.ticket_id = :ticket_id;`,
+    update: `UPDATE Tickets SET status = :status WHERE ticket_id = :ticket_id;`,
+  },
+  ticketMessage: {
+    add: `INSERT INTO TicketMessages (ticket_id, sender_id, message) VALUES (:ticket_id, :sender_id, :message);`,
+    get: `SELECT m.*, u.username, u.is_admin FROM TicketMessages m JOIN Users u ON m.sender_id = u.user_id WHERE m.ticket_id = :ticket_id ORDER BY m.sent_at ASC;`
   }
 };
 

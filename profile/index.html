@@ -3,44 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quizolandia</title>
+  <title>Profil | Quizolandia</title>
   <link rel="stylesheet" href="../styles/profile.css" />
   <link rel="stylesheet" href="../styles/global.css" />
 </head>
 <body>
 <nav>
-  <a href="index.html"><h1>Quizolandia</h1></a>
+  <a href="/"><h1>Quizolandia</h1></a>
   <div>
-    <img src="../assets/images/bell.png" alt="powiadomienia">
-    <img src="../assets/images/search.png" alt="wyszukiwanie">
+    <img src="/assets/images/user.svg" alt="użytkownik">
+    <a href="/search"><img src="/assets/images/search.png" alt="wyszukiwanie"></a>
     <button>Wyloguj się</button>
   </div>
 </nav>
+<h2 class="hidden">Nie znaleziono użytkownika :(</h2>
   <main>
     <section class="profil">
       <h2>Twoje Konto</h2>
-      <img src="../assets/images/tralalelo_tralala.jpeg" alt="profilowe" class="avatar"/>
-      <p><strong>Nick:</strong> Dawid W</p>
-      <p><strong>Passa:</strong> 2137</p>
+      <img src="" alt="profilowe" class="avatar"/>
+      <p><strong>Nick:</strong></p>
+      <p><strong>Passa:</strong></p>
     </section>
     <section class="staty">
       <h2 class="srodek">Statystyki</h2>
       <h3>Ilość quizow</h3>
-      <div class="wykres">
-        <div class="slup1"><div class="slup" style="height: 80%"></div><span>1</span></div>
-        <div class="slup1"><div class="slup" style="height: 50%"></div><span>2</span></div>
-        <div class="slup1"><div class="slup" style="height: 90%"></div><span>3</span></div>
-        <div class="slup1"><div class="slup" style="height: 60%"></div><span>4</span></div>
-        <div class="slup1"><div class="slup" style="height: 100%"></div><span>5</span></div>
-        <div class="slup1"><div class="slup" style="height: 70%"></div><span>6</span></div>
-        <div class="slup1"><div class="slup" style="height: 85%"></div><span>7</span></div>
-        <div class="slup1"><div class="slup" style="height: 65%"></div><span>8</span></div>
-        <div class="slup1"><div class="slup" style="height: 95%"></div><span>9</span></div>
-        <div class="slup1"><div class="slup" style="height: 75%"></div><span>10</span></div>
-        <div class="slup1"><div class="slup" style="height: 85%"></div><span>11</span></div>
-        <div class="slup1"><div class="slup" style="height: 20%"></div><span>12</span></div>
+      <div class="chart-container">
+        <div class="y-axis"></div>
+        <div class="wykres">
+        </div>
       </div>
     </section>
   </main>
+<footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>O Quizolandii</h3>
+      <p>Platforma edukacyjna oferująca interaktywne quizy i zadania wspomagające naukę.</p>
+      <div class="social-icons">
+        <a href="#"><img src="/assets/images/facebook.png" alt="Facebook"></a>
+        <a href="#"><img src="/assets/images/twitter.png" alt="Twitter"></a>
+        <a href="#"><img src="/assets/images/instagram.png" alt="Instagram"></a>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <h3>Przydatne linki</h3>
+      <a href="/">Strona główna</a>
+      <a href="/search/">Przeglądaj quizy</a>
+      <a href="/ranking/">Ranking</a>
+      <a href="/kontakt/">Kontakt</a>
+      <a href="/login">Logowanie</a>
+      <a href="/register/">Rejestracja</a>
+    </div>
+
+    <div class="footer-section">
+      <h3>Kontakt</h3>
+      <p>Email: kontakt@quizolandia.pl</p>
+      <p>Tel: +48 123 456 789</p>
+      <p>Adres: ul. Edukacyjna 15, Warszawa</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; Quizolandia Team 2025 | Wszystkie prawa zastrzeżone</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.7/rxjs.umd.min.js"></script>
+<script src="../scripts/data.js"></script>
+<script src="../scripts/autoLogger.js"></script>
+<script src="../scripts/profile.js"></script>
 </body>
 </html>
