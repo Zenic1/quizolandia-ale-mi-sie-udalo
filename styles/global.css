@@ -196,7 +196,63 @@ footer {
     background-color: var(--header-color);
     transform: translateY(-3px);
 }
+.admin-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0 30px;
+    padding: 12px;
+    background-color: var(--second-bg-color);
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+}
 
+.admin-link {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: var(--main-color);
+    color: var(--font-color);
+    font-weight: 600;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.admin-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--header-color);
+}
+
+.admin-link.active {
+    background-color: var(--header-color);
+    position: relative;
+}
+
+.admin-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background-color: var(--font-color);
+    border-radius: 2px;
+}
+
+@media screen and (max-width: 768px) {
+    .admin-nav {
+        flex-direction: column;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .admin-link {
+        width: 100%;
+        padding: 12px;
+    }
+}
 @media screen and (max-width: 768px) {
     nav {
         flex-direction: column;

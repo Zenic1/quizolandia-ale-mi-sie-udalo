@@ -130,12 +130,16 @@ export const Queries: QueriesStructure = {
     add: `INSERT INTO Questions (quiz_id, question_text, question_type, image_url, explanation, hint, points, question_order) VALUES (:quiz_id, :question_text, :question_type, :image_url, :explanation, :hint, :points, :question_order);`
   },
   user: {
-    get: `SELECT * FROM Users`,
+    get: `SELECT * FROM Users WHERE is_active = 1`,
+    getAll: `SELECT * FROM Users`,
     getMinimum: `SELECT user_id, username, avatar_url FROM Users WHERE user_id IN (:user_ids);`,
     getTopTen: `SELECT u.username, SUM(s.score) AS total_score FROM Users u JOIN UserScores s ON u.user_id = s.user_id GROUP BY u.user_id ORDER BY total_score DESC LIMIT 10;`,
     getQuizHistory: `SELECT q.title, s.score, s.max_possible_score, s.completed_at FROM UserScores s JOIN Quizzes q ON s.quiz_id = q.quiz_id WHERE s.user_id = :user_id ORDER BY s.completed_at DESC;`,
-    delete: `DELETE FROM Users where user_id = :user_id`,
-    update: `UPDATE Users SET username = :username, email = :email, password_hash = :password_hash, avatar_url = :avatar_url, created_at = :created_at, last_login = :last_login, is_admin = :is_admin WHERE user_id = :user_id`,
+    delete: `UPDATE Users SET is_active = 0 WHERE user_id = :user_id`,
+    update: `UPDATE Users SET username = :username, email = :email,
+      {{#if update_password}}password_hash = :password_hash,{{/if}}
+      {{#if update_active}}is_active = :is_active,{{/if}}
+      is_admin = :is_admin WHERE user_id = :user_id`,
     add: `INSERT INTO Users (username, email, password_hash, is_admin) VALUES (:username, :email, :password_hash, :is_admin);`,
     getFromLogin: `SELECT * FROM Users where username like :username;`,
     getFromEmail: `SELECT * FROM Users where email like :email;`,

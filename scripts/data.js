@@ -1,8 +1,9 @@
 ﻿let ws = new WebSocket("ws://localhost:8080");
+// let ws = new WebSocket("wss://ws.knuruf.tech")
 function initializeWebSocket() {
     const RECONNECT_INTERVAL = 2500;
-    ws = new WebSocket("ws://localhost:8080");
-
+    // let ws = new WebSocket("wss://ws.knuruf.tech")
+    let ws = new WebSocket("ws://localhost:8080");
     ws.addEventListener('close', function () {
         console.log("WebSocket closed, reconnecting...");
         rxjs.timer(RECONNECT_INTERVAL).subscribe(() => initializeWebSocket());

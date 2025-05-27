@@ -12,6 +12,7 @@ import {
 import {logger, wss, dbConfig, Queries, saltRounds} from "./config";
 import { query } from "winston";
 import bcrypt from 'bcrypt';
+import Handlebars from 'handlebars';
 logger.info(``);
 logger.info(`Successfully started the server!`);
 logger.info(``);
@@ -71,27 +72,42 @@ async function handleMethod(
     params: RequestPayload
 ): Promise<void> {
   try {
-    if(params.method === 'user.add')
-    {
+    // Obsługa dodawania użytkownika - hashowanie hasła
+    if(params.method === 'user.add') {
       await bcrypt.hash(params.params.password, saltRounds).then(function(hash: any) {
         params.params.password_hash = hash;
-        console.log(hash);
       });
     }
+
+    // Obsługa aktualizacji użytkownika - hashowanie hasła jeśli podano nowe
+    if(params.method === 'user.update' && params.params.update_password) {
+      await bcrypt.hash(params.params.password, saltRounds).then(function(hash: any) {
+        params.params.password_hash = hash;
+      });
+    }
+
     const [category, operation] = params.method.split(".");
     const method = (Queries as QueriesStructure)[category];
-    const query: string = method[operation] as string;
+    let query: string = method[operation] as string;
+
+    // Kompilacja szablonu SQL z Handlebars jeśli zawiera warunki
+    if (query.includes('{{')) {
+      const template = Handlebars.compile(query);
+      query = template(params.params);
+    }
 
     let rawResult = await executeQuery(query, params.params);
 
-    if(params.method === 'user.getFromLogin' || params.method === 'user.getFromEmail') rawResult = await filterLoginResults(rawResult, params);
+    if(params.method === 'user.getFromLogin' || params.method === 'user.getFromEmail') {
+      rawResult = await filterLoginResults(rawResult, params);
+    }
 
     if (params.responseVar && params.responseVar !== "N/A") {
       await sendResponse(ws, params.responseVar, rawResult);
     }
   } catch (error) {
-    await sendError(ws, 300, `Failed to handle method`, query);
-    logger.error(`Failed to handle method: ${query}`);
+    await sendError(ws, 300, `Failed to handle method`, error);
+    logger.error(`Failed to handle method: `, error);
     throw error;
   }
 }
