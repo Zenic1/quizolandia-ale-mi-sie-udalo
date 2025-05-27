@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<form class="quiz-container">
+    <div class="quiz-header" id="quizTitle">
+        Nazwa quizu
+    </div>
+    <div class="quiz-body">
+        <div class="question-header">
+            <input class="question-number" id="questionNumber" placeholder="pytanie 2">
+            <div class="question-type">
+                <span class="question-type-label">typ pytania</span>
+                <select id="questionType">
+                    <option value="single">Pojedynczy wybór</option>
+                    <option value="multiple">Wielokrotny wybór</option>
+                    <option value="text">Tekstowe</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="answers-grid">
+            <div class="answer-box">
+                <input type="text" id="answer1" placeholder="Odpowiedź">
+            </div>
+            <div class="answer-box">
+                <input type="text" id="answer2" placeholder="Odpowiedź">
+            </div>
+            <div class="answer-box">
+                <input type="text" id="answer3" placeholder="Odpowiedź">
+            </div>
+            <div class="answer-box">
+                <input type="text" id="answer4" placeholder="Odpowiedź">
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="#" class="nav-button" id="prevButton" onclick="changeQuestions(-1)">← poprzedni</a>
+            <a href="#" class="nav-button" id="nextButton" onclick="changeQuestions(1)">następny →</a>
+        </div>
+
+        <div class="action-buttons">
+            <button class="save-button" id="saveButton">zapisz</button>
+            <button class="delete-button" id="deleteButton">usuń</button>
+        </div>
+    </div>
+
+    <div class="lightbulb">
+        💡
+    </div>
+</form>
+<script src="../../scripts/global.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.7/rxjs.umd.min.js"></script>
+<script src="../../scripts/data.js"></script>
+<!--<script>-->
+
+<!--    let currentQuestionId = 2;-->
+
+
+<!--    window.onload = function() {-->
+
+<!--        loadQuestion(currentQuestionId);-->
+
+<!--        document.getElementById('prevButton').onclick = function() {-->
+<!--            if (currentQuestionId > 1) {-->
+<!--                currentQuestionId&#45;&#45;;-->
+<!--                loadQuestion(currentQuestionId);-->
+<!--            }-->
+<!--            return false;-->
+<!--        };-->
+
+<!--        document.getElementById('nextButton').onclick = function() {-->
+<!--            currentQuestionId++;-->
+<!--            loadQuestion(currentQuestionId);-->
+<!--            return false;-->
+<!--        };-->
+
+<!--        document.getElementById('saveButton').onclick = saveQuestion;-->
+<!--        document.getElementById('deleteButton').onclick = deleteQuestion;-->
+<!--    };-->
+
+<!--    function loadQuestion(id) {-->
+<!--        let xhr = new XMLHttpRequest();-->
+<!--        xhr.open("GET", "get_question.php?id=" + id, true);-->
+
+<!--        xhr.onreadystatechange = function() {-->
+<!--            if (xhr.readyState == 4 && xhr.status == 200) {-->
+<!--                let data = JSON.parse(xhr.responseText);-->
+
+<!--                if (data) {-->
+<!--                    document.getElementById('quizTitle').textContent = data.quiz_title;-->
+<!--                    document.getElementById('questionNumber').textContent = 'pytanie ' + id;-->
+<!--                    document.getElementById('questionType').value = data.question_type;-->
+<!--                    document.getElementById('answer1').value = data.answer1;-->
+<!--                    document.getElementById('answer2').value = data.answer2;-->
+<!--                    document.getElementById('answer3').value = data.answer3;-->
+<!--                    document.getElementById('answer4').value = data.answer4;-->
+<!--                } else {-->
+
+<!--                    document.getElementById('questionNumber').textContent = 'pytanie ' + id;-->
+<!--                    document.getElementById('answer1').value = '';-->
+<!--                    document.getElementById('answer2').value = '';-->
+<!--                    document.getElementById('answer3').value = '';-->
+<!--                    document.getElementById('answer4').value = '';-->
+<!--                }-->
+<!--            }-->
+<!--        };-->
+
+<!--        xhr.send();-->
+<!--    }-->
+
+<!--    function saveQuestion() {-->
+<!--        let xhr = new XMLHttpRequest();-->
+<!--        xhr.open("POST", "save_question.php", true);-->
+<!--        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");-->
+
+<!--        let data = "id=" + currentQuestionId +-->
+<!--            "&quiz_title=" + document.getElementById('quizTitle').textContent +-->
+<!--            "&question_type=" + document.getElementById('questionType').value +-->
+<!--            "&answer1=" + document.getElementById('answer1').value +-->
+<!--            "&answer2=" + document.getElementById('answer2').value +-->
+<!--            "&answer3=" + document.getElementById('answer3').value +-->
+<!--            "&answer4=" + document.getElementById('answer4').value;-->
+
+<!--        xhr.onreadystatechange = function() {-->
+<!--            if (xhr.readyState == 4 && xhr.status == 200) {-->
+<!--                alert("Pytanie zostało zapisane!");-->
+<!--            }-->
+<!--        };-->
+
+<!--        xhr.send(data);-->
+<!--    }-->
+
+<!--    function deleteQuestion() {-->
+<!--        if (confirm("Czy na pewno chcesz usunąć to pytanie?")) {-->
+<!--            let xhr = new XMLHttpRequest();-->
+<!--            xhr.open("POST", "delete_question.php", true);-->
+<!--            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");-->
+
+<!--            xhr.onreadystatechange = function() {-->
+<!--                if (xhr.readyState == 4 && xhr.status == 200) {-->
+<!--                    alert("Pytanie zostało usunięte!");-->
+<!--                    if (currentQuestionId > 1) {-->
+<!--                        currentQuestionId&#45;&#45;;-->
+<!--                    }-->
+<!--                    loadQuestion(currentQuestionId);-->
+<!--                }-->
+<!--            };-->
+
+<!--            xhr.send("id=" + currentQuestionId);-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+<script src="./main.js"></script>
+</body>
+</html>
