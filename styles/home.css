@@ -56,10 +56,6 @@
     transition: transform 0.3s ease;
 }
 
-.hero-image img:hover {
-    transform: scale(1.03) rotate(1deg);
-}
-
 .hero-buttons {
     display: flex;
     gap: 1rem;
