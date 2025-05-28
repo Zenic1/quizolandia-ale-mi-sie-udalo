@@ -1,19 +1,37 @@
 const params = new URLSearchParams(window.location.search);
 const urlUserId = parseInt(params.get('userId') ?? 0);
 
+async function checkIsAdmin() {
+    if (!window.userId) return false;
+    try {
+        const adminStatus = await request('user.isAdmin', { user_id: window.userId }, 'adminStatus');
+        return adminStatus === 1;
+    } catch (error) {
+        console.error("Błąd podczas sprawdzania uprawnień:", error);
+        return false;
+    }
+}
+
 if (urlUserId) {
     ws.addEventListener('open', () => {
         request('user.getMinimum', { user_ids: [urlUserId] }, 'profileUser')
             .then(users => {
-                if (!users || users.length == 0){
+                if (!users || users.length == 0 || (users[0].is_active === 0 && window.userId !== urlUserId)){
                     document.querySelector('main').style.display = 'none';
                     document.querySelector('.hidden').style.display = 'block';
+                    if (users[0] && users[0].is_active === 0) {
+                        document.querySelector('.hidden').textContent = 'Profil został dezaktywowany.';
+                    }
+                    return;
                 }
                 const user = users[0];
                 document.querySelector('.profil img.avatar').src = user.avatar_url || '../assets/images/icon.png';
                 document.querySelector('.profil p strong').textContent = 'Nick: ';
                 document.querySelector('.profil p').innerHTML += user.username;
+
+
             });
+
         request('userScore.distinctCount', { user_id: urlUserId }, 'profileUserScores')
             .then(scores => {
                 const wykresDiv = document.querySelector('.staty .wykres');
@@ -24,31 +42,10 @@ if (urlUserId) {
                 if (scores && scores.length > 0) {
                     const maxCount = Math.max(...scores.map(s => s.distinct_count));
                     const ySteps = 5;
-                    const dates = scores
-                        .map(s => new Date(s.date))
-                        .sort((a, b) => a - b);
-                    let currentStreak = 1;
-                    let maxStreak = 1;
 
-                    for (let i = 1; i < dates.length; i++) {
-                        const diffDays = Math.floor((dates[i] - dates[i - 1]) / (1000 * 60 * 60 * 24));
-                        if (diffDays === 1) {
-                            currentStreak++;
-                        } else if (diffDays > 1) {
-                            currentStreak = 1;
-                        }
-                        if (currentStreak > maxStreak) {
-                            maxStreak = currentStreak;
-                        }
-                    }
-                    const today = new Date();
-                    today.setHours(0,0,0,0);
-                    const lastDate = dates[dates.length - 1];
-                    lastDate.setHours(0,0,0,0);
-                    const diffToToday = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
-                    const streakToShow = (diffToToday === 0 || diffToToday === 1) ? currentStreak : 0;
+                    const calculatedStreak = calculateMaxStreak(scores.map(s => ({ completed_at: s.date })));
 
-                    document.querySelectorAll('.profil p')[1].innerHTML = `<strong>Passa:</strong> ${streakToShow}`;
+                    document.querySelectorAll('.profil p')[1].innerHTML = `<strong>Passa:</strong> ${calculatedStreak}`;
 
                     const uniqueValues = new Set();
                     uniqueValues.add(0);
@@ -101,8 +98,152 @@ if (urlUserId) {
                     document.querySelector('.staty h3').textContent = 'Brak danych o ukończonych quizach';
                 }
             });
+
+        loadRecentQuizzes();
+
+        loadUserAchievements();
     });
-}else {
+} else {
     document.querySelector('main').style.display = 'none';
     document.querySelector('.hidden').style.display = 'block';
+}
+
+function calculateMaxStreak(scores) {
+    if (!scores || scores.length === 0) return 0;
+
+    const daysWithQuizzes = new Set();
+    scores.forEach(score => {
+        const date = new Date(score.completed_at);
+        const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+        daysWithQuizzes.add(dateString);
+    });
+
+    const sortedDays = Array.from(daysWithQuizzes).sort();
+    if (sortedDays.length === 0) return 0;
+
+    let currentStreak = 1;
+    let maxStreak = 1;
+
+    for (let i = 1; i < sortedDays.length; i++) {
+        const current = new Date(sortedDays[i]);
+        const previous = new Date(sortedDays[i - 1]);
+
+        const timeDiff = current.getTime() - previous.getTime();
+        const diffDays = Math.round(timeDiff / (1000 * 60 * 60 * 24));
+
+        if (diffDays === 1) {
+            currentStreak++;
+            maxStreak = Math.max(maxStreak, currentStreak);
+        } else if (diffDays > 1) {
+            currentStreak = 1;
+        }
+    }
+
+    return maxStreak;
+}
+
+function loadRecentQuizzes() {
+    if (!urlUserId) return;
+
+    request('userScore.get', { user_id: urlUserId }, 'userRecentQuizzes')
+        .then(scores => {
+            const quizList = document.querySelector('.quiz-list');
+            if (!quizList) return;
+
+            if (!scores || scores.length === 0) {
+                quizList.innerHTML = '<li class="quiz-item">Brak ukończonych quizów</li>';
+                return;
+            }
+
+            quizList.innerHTML = '';
+
+            scores.sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at))
+                .slice(0, 5)
+                .forEach(score => {
+                    const li = document.createElement('li');
+                    li.className = 'quiz-item';
+
+                    const dateObj = new Date(score.completed_at);
+                    const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}.${(dateObj.getMonth()+1).toString().padStart(2, '0')}.${dateObj.getFullYear()}`;
+
+                    li.innerHTML = `
+                        <span class="quiz-date">${formattedDate}</span>
+                        <span class="quiz-name">Quiz #${score.quiz_id}</span>
+                        <span class="quiz-score">${score.score}/${score.max_possible_score}</span>
+                    `;
+
+                    quizList.appendChild(li);
+                });
+        })
+        .catch(error => {
+            console.error("Błąd podczas pobierania ostatnich quizów:", error);
+            document.querySelector('.quiz-list').innerHTML =
+                '<li class="quiz-item">Błąd podczas ładowania danych</li>';
+        });
+}
+
+function loadUserAchievements() {
+    if (!urlUserId) return;
+
+    request('userScore.get', { user_id: urlUserId }, 'userAchievementsData')
+        .then(scores => {
+            if (!scores) return;
+
+            const achievementsContainer = document.querySelector('.achievements-container');
+            if (!achievementsContainer) return;
+
+            achievementsContainer.innerHTML = '';
+
+            const maxStreak = calculateMaxStreak(scores);
+            console.log("Max streak:", maxStreak);
+
+            const firstQuiz = scores && scores.length > 0;
+            achievementsContainer.appendChild(createAchievement(
+                '🎯',
+                'Pierwszy quiz',
+                'Ukończony pierwszy quiz',
+                firstQuiz
+            ));
+
+            const tenQuizzes = scores && scores.length >= 10;
+            achievementsContainer.appendChild(createAchievement(
+                '🏆',
+                'Regularny quizer',
+                'Ukończonych 10 quizów',
+                tenQuizzes
+            ));
+
+            const perfectScore = scores && scores.some(s => s.score === s.max_possible_score);
+            achievementsContainer.appendChild(createAchievement(
+                '🌟',
+                'Perfekcjonista',
+                'Uzyskaj maksymalny wynik w quizie',
+                perfectScore
+            ));
+
+            achievementsContainer.appendChild(createAchievement(
+                '🔥',
+                'Na fali',
+                'Rozwiązuj quizy przez 3 dni z rzędu',
+                maxStreak >= 3
+            ));
+        })
+        .catch(error => {
+            console.error("Błąd podczas pobierania osiągnięć:", error);
+        });
+}
+
+function createAchievement(icon, title, description, isUnlocked) {
+    const div = document.createElement('div');
+    div.className = isUnlocked ? 'achievement' : 'achievement locked';
+
+    div.innerHTML = `
+        <div class="achievement-icon">${icon}</div>
+        <div class="achievement-info">
+            <h4>${title}</h4>
+            <p>${description}</p>
+        </div>
+    `;
+
+    return div;
 }

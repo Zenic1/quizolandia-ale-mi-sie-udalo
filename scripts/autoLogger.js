@@ -33,6 +33,15 @@ function logUser(data, isManualLogin = false){
         return;
     }
 
+    if(data[0].is_active === 0){
+        if(isManualLogin) {
+            alert('To konto zostało dezaktywowane przez administratora.');
+        }
+        localStorage.removeItem('userLogin');
+        localStorage.removeItem('userPassword');
+        return;
+    }
+
     window.userId = data[0].user_id;
 
     if(isManualLogin) {

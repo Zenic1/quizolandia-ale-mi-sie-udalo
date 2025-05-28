@@ -1,23 +1,38 @@
 main {
   display: flex;
-  justify-content: space-around;
-  margin-top: 2rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+  padding: 0 1rem;
+  color: var(--main-color);
 }
 .profil {
+  flex: 0 0 25%;
+  min-width: 250px;
   text-align: center;
+  position: relative;
 }
 h2{
   font-size: 1.8em;
 }
-.profil p{
-  font-size: 1.3em;
+.profil p {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
 }
 .avatar {
-  width: 15em;
-  height: 15em;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  margin-bottom: 0.5em;
+  object-fit: cover;
+  border: 4px solid var(--header-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
 
+.avatar:hover {
+  transform: scale(1.05);
 }
 .srodek{
   text-align: center;
@@ -26,10 +41,7 @@ h2{
 .staty {
   background-color: var(--second-bg-color);
   color: var(--main-color);
-  padding: 1rem;
-  border-radius: 15px;
-  width: 50%;
-  height: fit-content;
+  margin-bottom: 1.5rem;
 }
 .ikona {
   width: 3em;
@@ -106,12 +118,208 @@ h2{
   width: 1px;
   background-color: var(--main-color);
 }
+.card {
+  background-color: var(--second-bg-color);
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.right-column {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--header-color);
+  padding-bottom: 0.5rem;
+}
+
+.section-icon {
+  width: 24px;
+  height: 24px;
+}
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.status-indicator.active {
+  background-color: rgba(52, 211, 153, 0.2);
+  color: #10B981;
+}
+
+.status-indicator.inactive {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #EF4444;
+}
+
+.status-dot {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.status-indicator.active .status-dot {
+  background-color: #10B981;
+}
+
+.status-indicator.inactive .status-dot {
+  background-color: #EF4444;
+}
+
+.user-actions {
+  margin-top: 1.5rem;
+}
+
+.action-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.action-btn.primary {
+  background-color: var(--header-color);
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background-color: var(--header-darker);
+  transform: translateY(-2px);
+}
+
+.account-inactive {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-left: 4px solid #EF4444;
+  padding: 0.8rem;
+  margin: 1rem 0;
+  color: #EF4444;
+  text-align: left;
+}
+.achievements-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.achievement {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.achievement:hover {
+  transform: scale(1.03);
+}
+
+.achievement.locked {
+  opacity: 0.5;
+  position: relative;
+}
+
+.achievement.locked::before {
+  content: '🔒';
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 1.2rem;
+}
+
+.achievement-icon {
+  font-size: 2rem;
+  margin-right: 0.8rem;
+}
+
+.achievement-info h4 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.achievement-info p {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* Style dla listy quizów */
+.quiz-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.quiz-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.2s;
+}
+
+.quiz-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.quiz-date {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  min-width: 80px;
+}
+
+.quiz-name {
+  flex-grow: 1;
+  padding: 0 1rem;
+}
+
+.quiz-score {
+  font-weight: bold;
+}
+.status-indicator.active {
+  background-color: rgba(52, 211, 153, 0.2);
+  color: #10B981;
+}
+
+.status-indicator.active .status-dot {
+  background-color: #10B981;
+  box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.3);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
 @media screen and (max-width: 768px) {
   main{
     flex-direction: column;
-    align-items: center;
+
   }
-  .staty{
-    margin-top: 1em;
+  .profil, .right-column {
+    width: 100%;
   }
 }

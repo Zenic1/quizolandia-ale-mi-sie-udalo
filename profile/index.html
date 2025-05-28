@@ -17,23 +17,74 @@
   </div>
 </nav>
 <h2 class="hidden">Nie znaleziono użytkownika :(</h2>
-  <main>
-    <section class="profil">
-      <h2>Twoje Konto</h2>
-      <img src="" alt="profilowe" class="avatar"/>
-      <p><strong>Nick:</strong></p>
-      <p><strong>Passa:</strong></p>
-    </section>
-    <section class="staty">
-      <h2 class="srodek">Statystyki</h2>
-      <h3>Ilość quizow</h3>
+<main>
+  <section class="profil card">
+    <h2>Twoje Konto</h2>
+    <img src="" alt="profilowe" class="avatar"/>
+    <p><strong>Nick:</strong></p>
+    <p><strong>Passa:</strong></p>
+
+    <div class="user-actions" style="display:none;">
+      <button id="manage-account" class="action-btn primary">Zarządzaj kontem</button>
+    </div>
+  </section>
+
+  <div class="right-column">
+    <section class="staty card">
+      <div class="section-header">
+        <h2>Statystyki</h2>
+        <img src="/assets/images/chart.svg" alt="statystyki" class="section-icon">
+      </div>
+      <h3>Ilość quizów</h3>
       <div class="chart-container">
         <div class="y-axis"></div>
-        <div class="wykres">
+        <div class="wykres"></div>
+      </div>
+    </section>
+
+    <section class="achievements card">
+      <div class="section-header">
+        <h2>Osiągnięcia</h2>
+        <img src="/assets/images/trophy.svg" alt="osiągnięcia" class="section-icon">
+      </div>
+      <div class="achievements-container">
+        <div class="achievement">
+          <div class="achievement-icon">🎯</div>
+          <div class="achievement-info">
+            <h4>Pierwszy quiz</h4>
+            <p>Ukończony pierwszy quiz</p>
+          </div>
+        </div>
+        <div class="achievement locked">
+          <div class="achievement-icon">🔥</div>
+          <div class="achievement-info">
+            <h4>Mistrz quizów</h4>
+            <p>Ukończone 20 quizów</p>
+          </div>
         </div>
       </div>
     </section>
-  </main>
+
+    <section class="recent-quizzes card">
+      <div class="section-header">
+        <h2>Ostatnie quizy</h2>
+        <img src="/assets/images/history.svg" alt="historia" class="section-icon">
+      </div>
+      <ul class="quiz-list">
+        <li class="quiz-item">
+          <span class="quiz-date">12.05.2025</span>
+          <span class="quiz-name">Matematyka - poziom podstawowy</span>
+          <span class="quiz-score">8/10</span>
+        </li>
+        <li class="quiz-item">
+          <span class="quiz-date">10.05.2025</span>
+          <span class="quiz-name">Geografia świata</span>
+          <span class="quiz-score">6/10</span>
+        </li>
+      </ul>
+    </section>
+  </div>
+</main>
 <footer>
   <div class="footer-content">
     <div class="footer-section">

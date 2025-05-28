@@ -15,21 +15,21 @@ isAdmin().then(adminStatus => {
 
 async function loadDashboardStats() {
     try {
-        // Pobieranie liczby użytkowników
         const users = await request("user.get", {}, "dashboardUsers");
         document.getElementById('users-count').textContent = users.length;
 
-        // Pobieranie liczby quizów
-        const quizzes = await request("quiz.getWithCategory", {}, "dashboardQuizzes");
-        document.getElementById('quizzes-count').textContent = quizzes.length;
+        const activeUsers = users.filter(user => user.is_active === 1).length;
+        const inactiveUsers = users.filter(user => user.is_active === 0).length;
 
-        // Pobieranie liczby zgłoszeń
-        const tickets = await request("ticket.get", {}, "dashboardTickets");
-        document.getElementById('tickets-count').textContent = tickets.length;
+        if (document.getElementById('active-users-count')) {
+            document.getElementById('active-users-count').textContent = activeUsers;
+        }
+        if (document.getElementById('inactive-users-count')) {
+            document.getElementById('inactive-users-count').textContent = inactiveUsers;
+        }
 
-        // Obliczanie liczby logowań dzisiaj
         const loginsToday = users.filter(user => {
-            if (!user.last_login) return false;
+            if (!user.last_login || user.is_active === 0) return false;
             const loginDate = new Date(user.last_login);
             const today = new Date();
             return loginDate.getDate() === today.getDate() &&
@@ -51,13 +51,11 @@ async function loadRecentActivities() {
         const activitiesList = document.getElementById('recent-activities');
         activitiesList.innerHTML = '<li class="activity-item">Ładowanie aktywności...</li>';
 
-        // Pobieranie danych
         const users = await request("user.get", {}, "activityUsers");
         const tickets = await request("ticket.get", {}, "activityTickets");
 
         const activities = [];
 
-        // Ostatnie logowania
         users
             .filter(user => user.last_login)
             .sort((a, b) => new Date(b.last_login) - new Date(a.last_login))
@@ -70,7 +68,6 @@ async function loadRecentActivities() {
                 });
             });
 
-        // Ostatnie zgłoszenia
         tickets
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .slice(0, 5)
@@ -82,10 +79,8 @@ async function loadRecentActivities() {
                 });
             });
 
-        // Sortowanie wszystkich aktywności według czasu
         activities.sort((a, b) => b.timestamp - a.timestamp);
 
-        // Wyświetlanie aktywności
         activitiesList.innerHTML = '';
 
         if (activities.length === 0) {

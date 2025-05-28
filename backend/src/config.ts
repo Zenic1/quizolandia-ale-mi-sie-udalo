@@ -133,7 +133,7 @@ export const Queries: QueriesStructure = {
   user: {
     get: `SELECT * FROM Users WHERE is_active = 1`,
     getAll: `SELECT * FROM Users`,
-    getMinimum: `SELECT user_id, username, avatar_url FROM Users WHERE user_id IN (:user_ids);`,
+    getMinimum: `SELECT user_id, username, avatar_url, is_active FROM Users WHERE user_id IN (:user_ids);`,
     getTopTen: `SELECT u.username, SUM(s.score) AS total_score FROM Users u JOIN UserScores s ON u.user_id = s.user_id GROUP BY u.user_id ORDER BY total_score DESC LIMIT 10;`,
     getQuizHistory: `SELECT q.title, s.score, s.max_possible_score, s.completed_at FROM UserScores s JOIN Quizzes q ON s.quiz_id = q.quiz_id WHERE s.user_id = :user_id ORDER BY s.completed_at DESC;`,
     delete: `UPDATE Users SET is_active = 0 WHERE user_id = :user_id`,
