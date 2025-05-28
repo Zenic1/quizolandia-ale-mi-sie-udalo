@@ -5,39 +5,48 @@ const categoryDropDown = document.getElementById("categoryDropDown");
 
 let searchQuery = urlParams.get("searchQuery") ?? "";
 let categoryFilter = parseInt(urlParams.get("categoryId") ?? 0);
+let quizData = [];
+let quizRatingData = [];
 
 setTimeout(function () {
   searchBar.value = searchQuery;
   categoryDropDown.value = parseInt(categoryFilter);
 }, 100);
 
-function fetchData() {
-  console.log(searchQuery, categoryFilter);
-  request("quiz.getWithCategory", {}, "quizList");
-  request("category.countOfQuizzes", {}, "categoryList");
-  request("quiz.getRating", {}, "quizRatings");
-}
+ws.addEventListener('open', function() {
+  showLoadingState();
 
-ws.onopen = fetchData;
-
-dataChange.subscribe((data) => {
-  if (data === "quizList" || data === "quizRatings") {
-    if (cachedData.has("quizList") && cachedData.has("quizRatings")) {
-      applyRatingsToQuizzes();
-      filterSearch(cachedData.get("quizList"));
-    }
-  }
-  else if (data === "categoryList")
-    generateCategoryHTML(cachedData.get("categoryList"));
+  Promise.all([
+    request("quiz.getWithCategory", {}, "quizList").then(data => {
+      quizData = data;
+      return data;
+    }),
+    request("category.countOfQuizzes", {}, "categoryList").then(data => {
+      generateCategoryHTML(data);
+      return data;
+    }),
+    request("quiz.getRating", {}, "quizRatings").then(data => {
+      quizRatingData = data;
+      return data;
+    })
+  ]).then(() => {
+    applyRatingsToQuizzesDirect(quizData, quizRatingData);
+    filterSearch(quizData);
+    hideLoadingState();
+  }).catch(error => {
+    document.querySelector('.container').innerHTML = '<p class="empty-state">Wystąpił błąd podczas ładowania quizów</p>';
+    hideLoadingState();
+  });
 });
 
-function applyRatingsToQuizzes() {
-  const quizzes = cachedData.get("quizList");
-  const quizRatings = cachedData.get("quizRatings");
+function applyRatingsToQuizzesDirect(quizzes, ratings) {
+  if (!quizzes || !Array.isArray(quizzes)) {
+    return;
+  }
 
   const ratingsMap = {};
-  if (quizRatings && quizRatings.length > 0) {
-    quizRatings.forEach(item => {
+  if (ratings && ratings.length > 0) {
+    ratings.forEach(item => {
       ratingsMap[item.quiz_id] = parseFloat(item.rating).toFixed(1);
     });
   }
@@ -46,52 +55,94 @@ function applyRatingsToQuizzes() {
     quiz.rating = ratingsMap[quiz.quiz_id] || '0.0';
   });
 
+  return quizzes;
+}
+
+dataChange.subscribe((data) => {
+  if (data === "quizList") {
+    quizData = cachedData.get("quizList");
+    if (quizRatingData.length > 0) {
+      applyRatingsToQuizzesDirect(quizData, quizRatingData);
+      filterSearch(quizData);
+    }
+  }
+  else if (data === "quizRatings") {
+    quizRatingData = cachedData.get("quizRatings");
+    if (quizData.length > 0) {
+      applyRatingsToQuizzesDirect(quizData, quizRatingData);
+      filterSearch(quizData);
+    }
+  }
+  else if (data === "categoryList") {
+    generateCategoryHTML(cachedData.get("categoryList"));
+  }
+});
+
+function applyRatingsToQuizzes() {
+  if (!cachedData.has("quizList") || !cachedData.has("quizRatings")) {
+    return;
+  }
+
+  const quizzes = cachedData.get("quizList");
+  const quizRatings = cachedData.get("quizRatings");
+  applyRatingsToQuizzesDirect(quizzes, quizRatings);
   cachedData.set("quizList", quizzes);
 }
 
 function filterSearch(quizzes) {
-  if (!(quizzes.length > 0)) return "nie ma";
+  if (!quizzes || !Array.isArray(quizzes) || quizzes.length === 0) {
+    const quizContainer = document.querySelector(".container");
+    quizContainer.innerHTML = '<p class="empty-state">Nie znaleziono quizów</p>';
+    return [];
+  }
 
-  quizzes = quizzes.filter((quiz) =>
-      quiz.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-  quizzes = quizzes.filter(
+  let filteredQuizzes = [...quizzes];
+
+  if (searchQuery) {
+    filteredQuizzes = filteredQuizzes.filter((quiz) =>
+        quiz.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+
+  filteredQuizzes = filteredQuizzes.filter(
       (quiz) => quiz.category_id === categoryFilter || categoryFilter === 0
   );
 
-  generateSearchHtml(quizzes);
-  return quizzes;
+  if (filteredQuizzes.length === 0) {
+    document.querySelector(".container").innerHTML = '<p class="empty-state">Nie znaleziono quizów spełniających kryteria</p>';
+    return [];
+  }
+
+  generateSearchHtml(filteredQuizzes);
+  return filteredQuizzes;
 }
 
 function changeSearch(text) {
-  console.log(`Changed search query to : ${text}`);
   searchQuery = text;
-  filterSearch(cachedData.get("quizList"));
+  if (quizData.length > 0) {
+    filterSearch(quizData);
+  }
+}
+
+function changeCategory(value) {
+  categoryFilter = parseInt(value);
+  if (quizData.length > 0) {
+    filterSearch(quizData);
+  }
 }
 
 function generateSearchHtml(quizzes) {
-  const quizContainer = document.getElementsByClassName("container")[0];
-  const currentQuizzes = Array.from(quizContainer.children);
+  const quizContainer = document.querySelector(".container");
 
-  const quizzesToRemove = currentQuizzes.filter(child => {
-    const quizId = child.href.split('quizId=')[1];
-    return !quizzes.some(q => q.quiz_id == quizId);
-  });
+  if (!quizContainer) {
+    return;
+  }
 
-  quizzesToRemove.forEach(async child => {
-    child.classList.add('exiting');
-    child.addEventListener('animationend', () => {
-      requestAnimationFrame(() => child.remove());
-    });
-  });
+  quizContainer.innerHTML = '';
 
-  const existingIds = currentQuizzes.map(c => c.href.split('quizId=')[1]);
-  const quizzesToAdd = quizzes.filter(q => !existingIds.includes(q.quiz_id.toString()));
-
-  quizzesToAdd.forEach((quiz, index) => {
+  quizzes.forEach((quiz, index) => {
     const child = createQuizElement(quiz);
     quizContainer.appendChild(child);
-
     child.style.animationDelay = `${index * 50}ms`;
   });
 }
@@ -146,7 +197,7 @@ function generateStars(rating) {
 
 function showLoadingState() {
   const container = document.querySelector('.container');
-  container.classList.add('loading');
+  container.innerHTML = '<p class="loading-message">Ładowanie quizów...</p>';
 }
 
 function hideLoadingState() {
@@ -180,12 +231,6 @@ function generateCategoryHTML(categories) {
   });
 }
 
-function changeCategory(value) {
-  console.log(`Changed category id to : ${value}`);
-  categoryFilter = parseInt(value);
-  filterSearch(cachedData.get("quizList"));
-}
-
 function capitalFirstLetter(text) {
   return `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
 }
@@ -198,8 +243,10 @@ const observer = new IntersectionObserver((entries) => {
   });
 });
 
-document.querySelectorAll('.quiz').forEach(quiz => {
-  observer.observe(quiz);
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.quiz').forEach(quiz => {
+    observer.observe(quiz);
+  });
 });
 
 if (!document.startViewTransition) {
