@@ -1,0 +1,231 @@
+:root{
+    --font-color: #f0f6ff;
+    --bg-color: #475b63;
+    --second-bg-color: #BACDB0;
+    --header-color: #729B79;
+    --main-color: #2E2C2F;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face{
+    font-family: Inter;
+    src: url('Inter.ttf');
+}
+
+body{
+    background-color: var(--bg-color);
+    font-family: 'Inter';
+}
+
+
+main{
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    gap: 50px;
+}
+
+/* Czaty */
+
+#czaty{
+    background-color: var(--second-bg-color);
+    height: fit-content;
+    border-radius: 20px;
+}
+
+#czaty>h4{
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    margin: 10px;
+}
+
+
+.osoba{
+    height: 40px;
+    width: auto;
+    border-radius: 20px;
+    margin: 10px;
+    margin-left: 20px;
+
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.osoba>img{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+}
+
+.osoba>p{
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+/* właściwy czat*/
+
+#rozmowa{
+    background-color: var(--second-bg-color);
+    height: 40vw;
+    width: 100%;
+    border-radius: 20px;
+    padding: 0 30px 20px 30px;
+}
+
+#rozmowa>h4{
+    display: flex;
+    font-size: 24px;
+    margin: 10px;
+    padding-left: 20px;
+}
+
+#rozmowa>div{
+    width: 100%;
+    height: 80%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#rozmowa>div::-webkit-scrollbar { 
+    display: none;
+}
+
+.dymek{
+    background-color: var(--font-color);
+    width: fit-content;
+    max-width: 400px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.kogos{
+    align-self: flex-start;
+}
+.user{
+    align-self: flex-end;
+}
+
+.godzina{
+    font-size: 10px;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2px;
+}
+
+#rozmowa>div>p{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+form{
+    display: grid;
+    grid-template-columns: 1fr 30px;
+    gap: 5px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+#message{
+    background-color: var(--header-color);
+    color: var(--font-color);
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    height: 30px;
+    padding-left: 10px;
+}
+
+
+#message::placeholder{
+    color: var(--font-color);
+    font-size: 16px;
+}
+
+input[type=image]{
+    width: auto;
+    height: 30px;
+}
+
+
+/* footer */
+
+/* MEDIA */
+
+
+@media (max-width: 700px){
+    .nav-desktop{
+        display: none;
+    }
+
+    .nav-mobile{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    nav{
+        height: 80px;
+    }
+
+    nav>a>h1{
+        font-size: 32px;
+    }
+
+    .nav-mobile>img {
+        height: 28px;
+        width: 28px;
+    }
+
+    .nav-mobile>button{
+        height: 28px;
+        width: 80px;
+        font-size: 12px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        background-color: var(--main-color);
+        color: var(--font-color);
+    }
+
+
+    /* wynik */
+
+
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .quiz>p{
+        font-size: 12px;
+    }
+
+    /* footer */
+
+    footer{
+        height: 32px;
+    }
+
+    footer>p{
+        font-size: 12px;
+    }
+
+}
+
+

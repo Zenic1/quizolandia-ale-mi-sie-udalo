@@ -247,3 +247,13 @@ function createAchievement(icon, title, description, isUnlocked) {
 
     return div;
 }
+onLogin.subscribe(() => {
+    console.log(getCurrentUserId(), urlUserId)
+    if(getCurrentUserId() !== 0 && urlUserId !== 0 && getCurrentUserId() === urlUserId){
+        document.getElementsByClassName('user-actions')[0].setAttribute('style', 'display:block');
+    }
+})
+
+function relocateToManagement() {
+    window.location.href = `/zarzadzanieKontem/index.html?userId=${urlUserId}`
+}

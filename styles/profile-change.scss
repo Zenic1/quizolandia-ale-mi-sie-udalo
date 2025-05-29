@@ -1,0 +1,184 @@
+$primary-color: #475b63;
+$secondary-color: #6b9080;
+$accent-color: #a4c3b2;
+$text-color: #eaf4f4;
+$input-bg: #2a3d45;
+$transition-speed: 0.3s;
+
+.user-settings {
+  background: $primary-color;
+  min-height: 100vh;
+  padding: 2rem 0;
+  color: $text-color;
+
+  .settings-container {
+    width: 80%;
+    margin: 0 auto;
+    background: darken($primary-color, 5%);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+
+    .settings-title {
+      font-size: 2.2rem;
+      margin-bottom: 2.5rem;
+      color: lighten($accent-color, 10%);
+      text-align: center;
+    }
+  }
+
+  .settings-form {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .form-section {
+    background: $input-bg;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+    &.avatar-section {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+
+      .avatar-preview {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid $accent-color;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      div.form-group{
+        div.input-group{
+          input{
+            width: 400px;
+          }
+        }
+      }
+    }
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+      color: lighten($accent-color, 5%);
+    }
+  }
+
+  .modern-input {
+    width: 100%;
+    padding: 1rem;
+    background: lighten($input-bg, 5%);
+    border: 2px solid transparent;
+    border-radius: 0.8rem;
+    color: $text-color;
+    font-size: 1rem;
+    transition: all $transition-speed;
+
+    &:focus {
+      outline: none;
+      border-color: $accent-color;
+      box-shadow: 0 0 0 3px rgba($accent-color, 0.2);
+    }
+
+    &::placeholder {
+      color: rgba($text-color, 0.6);
+    }
+  }
+
+  .input-group {
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+
+    button {
+      background: $secondary-color;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 0.8rem;
+      cursor: pointer;
+      transition: background $transition-speed;
+      color: $text-color;
+
+      &:hover {
+        background: lighten($secondary-color, 5%);
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+        filter: invert(1);
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    button {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all $transition-speed;
+    }
+
+    .save-changes {
+      background: $secondary-color;
+      color: white;
+
+      &:hover {
+        background: lighten($secondary-color, 5%);
+        transform: translateY(-2px);
+      }
+    }
+
+    .cancel {
+      background: transparent;
+      color: $text-color;
+      border: 2px solid $text-color;
+
+      &:hover {
+        background: rgba($text-color, 0.1);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .user-settings {
+    .settings-container {
+      width: 90%;
+      padding: 1.5rem;
+    }
+
+    .form-section.avatar-section {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .form-actions {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

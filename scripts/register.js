@@ -26,5 +26,7 @@ function addUser(form)
         is_admin: false
     }
     console.log(user)
-    request('user.add', user)
+    request('user.add', user, 'feedback').then((response) => {
+        window.location.href = '/login'
+    })
 }

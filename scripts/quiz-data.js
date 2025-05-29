@@ -63,7 +63,7 @@ async function loadComments(quiz_id) {
         .reverse()
         .forEach(comment => {
             const user = users.find(user => user.user_id === comment.user_id);
-            commentList.appendChild(createComment(user, comment.comment_text, comment.rating, comment.created_at));
+            commentList.appendChild(createComment(user, comment.comment_text, comment.rating, comment.created_at, comment));
         });
 }
 

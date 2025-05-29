@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
 
             card.addEventListener('click', () => {
-                window.location.href = `quiz/?quizId=${quiz.quiz_id}`;
+                window.location.href = `./quiz/?quizId=${quiz.quiz_id}`;
             });
 
             return card;

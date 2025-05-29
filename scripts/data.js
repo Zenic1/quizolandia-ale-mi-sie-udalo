@@ -51,7 +51,7 @@ function request(method, params = {}, responseVar = "N/A") {
     return new Promise((resolve, reject) => {
         ws.addEventListener('message', (event) => {
             if(!event.data) {
-                reject(new Error('Error in data', event.data));
+                reject(new Error('Error in data'));
                 return;
             }
             const data = JSON.parse(event.data);

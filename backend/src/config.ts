@@ -144,12 +144,14 @@ export const Queries: QueriesStructure = {
     add: `INSERT INTO Users (username, email, password_hash, is_admin) VALUES (:username, :email, :password_hash, :is_admin);`,
     getFromLogin: `SELECT * FROM Users where username like :username;`,
     getFromEmail: `SELECT * FROM Users where email like :email;`,
+    getFromId: `SELECT u.user_id, u.avatar_url, u.email, u.username, u.is_admin FROM Users u where user_id like :user_id;`,
     log: `Update Users set last_login = CURRENT_TIMESTAMP() WHERE user_id = :user_id;`,
     isAdmin: `SELECT is_admin FROM Users WHERE user_id = :user_id;`,
   },
   comment: {
     get: `SELECT * FROM QuizComments where quiz_id = :quiz_id;`,
-    add: `INSERT INTO QuizComments (quiz_id, user_id, comment_text, rating, created_at) VALUES (:quiz_id, :user_id, :comment_text, :rating, CURRENT_TIMESTAMP())`
+    add: `INSERT INTO QuizComments (quiz_id, user_id, comment_text, rating, created_at) VALUES (:quiz_id, :user_id, :comment_text, :rating, CURRENT_TIMESTAMP())`,
+    delete: `DELETE FROM QuizComments WHERE comment_id = :comment_id;`,
   },
   userScore: {
     add: `INSERT INTO UserScores (score_id, user_id, quiz_id, score, max_possible_score, completed_at)
@@ -167,6 +169,10 @@ export const Queries: QueriesStructure = {
   ticketMessage: {
     add: `INSERT INTO TicketMessages (ticket_id, sender_id, message) VALUES (:ticket_id, :sender_id, :message);`,
     get: `SELECT m.*, u.username, u.is_admin FROM TicketMessages m JOIN Users u ON m.sender_id = u.user_id WHERE m.ticket_id = :ticket_id ORDER BY m.sent_at ASC;`
+  },
+  message: {
+    get: ``,
+    getFromReceiverID: `SELECT * FROM Messages WHERE receiver_id = :receiver_id OR sender_id = :receiver_id ORDER BY sent_at DESC;`,
   }
 };
 

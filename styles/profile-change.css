@@ -1,0 +1,148 @@
+.user-settings {
+  background: #475b63;
+  min-height: 100vh;
+  padding: 2rem 0;
+  color: #eaf4f4;
+}
+.user-settings .settings-container {
+  width: 80%;
+  margin: 0 auto;
+  background: rgb(60.35, 77.35, 84.15);
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+.user-settings .settings-container .settings-title {
+  font-size: 2.2rem;
+  margin-bottom: 2.5rem;
+  color: rgb(194.7350993377, 215.2649006623, 204.0066225166);
+  text-align: center;
+}
+.user-settings .settings-form {
+  display: grid;
+  gap: 2.5rem;
+}
+.user-settings .form-section {
+  background: #2a3d45;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.user-settings .form-section.avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.user-settings .form-section.avatar-section .avatar-preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #a4c3b2;
+}
+.user-settings .form-section.avatar-section .avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.user-settings .form-section.avatar-section div.form-group div.input-group input {
+  width: 400px;
+}
+.user-settings .form-group {
+  margin-bottom: 1.5rem;
+}
+.user-settings .form-group label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+  color: rgb(179.3675496689, 205.1324503311, 191.0033112583);
+}
+.user-settings .modern-input {
+  width: 100%;
+  padding: 1rem;
+  background: rgb(51.6486486486, 75.0135135135, 84.8513513514);
+  border: 2px solid transparent;
+  border-radius: 0.8rem;
+  color: #eaf4f4;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+.user-settings .modern-input:focus {
+  outline: none;
+  border-color: #a4c3b2;
+  box-shadow: 0 0 0 3px rgba(164, 195, 178, 0.2);
+}
+.user-settings .modern-input::placeholder {
+  color: rgba(234, 244, 244, 0.6);
+}
+.user-settings .input-group {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+}
+.user-settings .input-group button {
+  background: #6b9080;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  color: #eaf4f4;
+}
+.user-settings .input-group button:hover {
+  background: rgb(121.0398406375, 155.4601593625, 140.5756972112);
+}
+.user-settings .input-group button img {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+}
+.user-settings .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.user-settings .form-actions button {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.user-settings .form-actions .save-changes {
+  background: #6b9080;
+  color: white;
+}
+.user-settings .form-actions .save-changes:hover {
+  background: rgb(121.0398406375, 155.4601593625, 140.5756972112);
+  transform: translateY(-2px);
+}
+.user-settings .form-actions .cancel {
+  background: transparent;
+  color: #eaf4f4;
+  border: 2px solid #eaf4f4;
+}
+.user-settings .form-actions .cancel:hover {
+  background: rgba(234, 244, 244, 0.1);
+}
+
+@media (max-width: 768px) {
+  .user-settings .settings-container {
+    width: 90%;
+    padding: 1.5rem;
+  }
+  .user-settings .form-section.avatar-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  .user-settings .form-actions {
+    flex-direction: column;
+  }
+  .user-settings .form-actions button {
+    width: 100%;
+  }
+}
+
+/*# sourceMappingURL=profile-change.css.map */

@@ -1,5 +1,7 @@
 ﻿window.userId = 0;
 
+const onLogin = new rxjs.Subject();
+
 function storeLogin(login, password)
 {
     localStorage.setItem('userLogin', login.toString());
@@ -74,7 +76,7 @@ function logout() {
     localStorage.removeItem('userPassword');
     window.userId = 0;
     updateProfileIcon();
-    alert('Pomyślnie wylogowano');
+    // alert('Pomyślnie wylogowano');
     window.location.href = '/';
 }
 
@@ -201,11 +203,15 @@ document.addEventListener('DOMContentLoaded', () => {
     updateProfileIcon();
 
     if(login && password) {
+        console.log('b')
         ws.addEventListener('open', () => {
             tryLogin(login, password, (data) => {
                 if(data && data[0]) {
+                    onLogin.next()
                     console.log('Automatycznie zalogowano jako: ' + data[0].username);
                     updateProfileIcon();
+                }else{
+                    logout()
                 }
             }, false);
         });

@@ -13,10 +13,16 @@ function createStarRating(rating) {
     return container;
 }
 
-function createComment(author, comment, rating, dateTime) {
+function deleteComment(commentId){
+    console.log('deleteComment', commentId);
+    request('comment.delete', {comment_id: parseInt(commentId)}, 'feedback').then(() => loadComments(quizId))
+}
+
+function createComment(author, comment, rating, dateTime, commentAll) {
     const commentDiv = document.createElement('div');
     commentDiv.className = 'comment-card';
-
+    console.log(commentAll)
+    const maybeDelete = (author.user_id === getCurrentUserId()) ? `<button type="button" class="comment-settings" onclick="deleteComment(${commentAll.comment_id})">Usun</button>` : ``
     commentDiv.innerHTML = `
         <div class="author-image" style="background-image: url('${author.avatar_url}')"></div>
         <div class="comment-content">
@@ -26,7 +32,7 @@ function createComment(author, comment, rating, dateTime) {
                     ${createStarRating(rating).outerHTML}
                     <span class="comment-date">${formatData(dateTime)}</span>
                 </div>
-                <span class="comment-settings"></span>
+                ${maybeDelete}
             </div>
             <p class="comment-text">${comment}</p>
         </div>

@@ -16,8 +16,8 @@
         <div class="question-header">
             <input class="question-number" id="questionNumber" placeholder="pytanie 2">
             <div class="question-type">
-                <span class="question-type-label">typ pytania</span>
-                <select id="questionType">
+                <label for="questionType" class="question-type-label">typ pytania</label>
+                <select id="questionType" onchange="changeQuestionType()">
                     <option value="single">Pojedynczy wybór</option>
                     <option value="multiple">Wielokrotny wybór</option>
                     <option value="text">Tekstowe</option>
@@ -26,17 +26,40 @@
         </div>
 
         <div class="answers-grid">
-            <div class="answer-box">
+            <div class="answer-box single">
                 <input type="text" id="answer1" placeholder="Odpowiedź">
+                <input type="radio" name="singleAnswer" id="singleAnswerRadio1">
             </div>
-            <div class="answer-box">
+            <div class="answer-box single">
                 <input type="text" id="answer2" placeholder="Odpowiedź">
+                <input type="radio" name="singleAnswer" id="singleAnswerRadio2">
             </div>
-            <div class="answer-box">
+            <div class="answer-box single">
                 <input type="text" id="answer3" placeholder="Odpowiedź">
+                <input type="radio" name="singleAnswer" id="singleAnswerRadio3">
             </div>
-            <div class="answer-box">
+            <div class="answer-box single">
                 <input type="text" id="answer4" placeholder="Odpowiedź">
+                <input type="radio" name="singleAnswer" id="singleAnswerRadio4">
+            </div>
+            <div class="answer-box multiple">
+                <input type="text" id="multiple_answer1" placeholder="Odpowiedź">
+                <input type="checkbox" name="multipleAnswer" id="multipleAnswerCheckbox1">
+            </div>
+            <div class="answer-box multiple">
+                <input type="text" id="multiple_answer2" placeholder="Odpowiedź">
+                <input type="checkbox" name="multipleAnswer" id="multipleAnswerCheckbox2">
+            </div>
+            <div class="answer-box multiple">
+                <input type="text" id="multiple_answer3" placeholder="Odpowiedź">
+                <input type="checkbox" name="multipleAnswer" id="multipleAnswerCheckbox3">
+            </div>
+            <div class="answer-box multiple">
+                <input type="text" id="multiple_answer4" placeholder="Odpowiedź">
+                <input type="checkbox" name="multipleAnswer" id="multipleAnswerCheckbox4">
+            </div>
+            <div class="answer-box text">
+                <input type="text" id="text_answer" placeholder="Odpowiedź">
             </div>
         </div>
 
@@ -46,8 +69,9 @@
         </div>
 
         <div class="action-buttons">
-            <button class="save-button" id="saveButton">zapisz</button>
-            <button class="delete-button" id="deleteButton">usuń</button>
+            <button type="button" class="save-button" id="addButton" onclick="loadNullQuestion()">Dodaj</button>
+            <button type="button" class="save-button" id="saveButton" onclick="sendChanges()">Zapisz</button>
+            <button type="button" class="delete-button" id="deleteButton" onclick="deleteQuestion()">Usuń</button>
         </div>
     </div>
 
@@ -55,6 +79,7 @@
         💡
     </div>
 </form>
+<script src="../../scripts/autoLogger.js"></script>
 <script src="../../scripts/global.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.7/rxjs.umd.min.js"></script>
 <script src="../../scripts/data.js"></script>

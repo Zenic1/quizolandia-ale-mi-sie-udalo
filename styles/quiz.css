@@ -4,7 +4,6 @@
     --star-active: #ffd700;
     --star-inactive: #e0e0e0;
 }
-
 main {
     padding: 2rem;
     max-width: 1200px;
@@ -250,13 +249,18 @@ textarea::placeholder{
 
 
 .comment-settings {
+    all: unset;
     position: absolute;
-    top: 0;
     right: 0;
     cursor: pointer;
-    color: var(--comment-meta);
+    color: aliceblue;
     transition: color 0.2s ease;
     font-size: 1.2rem;
+    width: fit-content;
+    height: fit-content;
+    padding: 5px;
+    background-color: #e71e1e;
+    border-radius: 10px;
 }
 
 .comment-settings:hover {
@@ -268,7 +272,7 @@ textarea::placeholder{
     align-items: center;
     gap: 1.5rem;
     margin-left: auto;
-    padding-right: 30px;
+    padding-right: 100px;
 }
 
 .comment-date {
@@ -470,10 +474,4 @@ textarea::placeholder{
     font-style: normal;
     font-weight: 900;
     src: url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-solid-900.woff2) format('woff2');
-}
-
-.comment-settings::after {
-    content: "\f142";
-    font-family: 'Font Awesome 5 Free', serif;
-    font-weight: 900;
 }
