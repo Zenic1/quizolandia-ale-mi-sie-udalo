@@ -316,6 +316,8 @@ section h2::after {
     text-align: center;
     padding: 4rem 2rem;
     box-shadow: var(--shadow);
+    width: 90%;
+    margin: 0 auto;
 }
 
 .contact-section h2 {
