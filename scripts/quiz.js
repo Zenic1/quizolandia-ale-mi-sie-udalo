@@ -1,4 +1,14 @@
 ﻿userId = window.userId
+let isAdminUser = false;
+
+function checkAdminStatus() {
+    isAdmin().then(result => {
+        isAdminUser = result;
+        if (quizId) loadComments(quizId);
+    }).catch(err => {
+        console.error("Błąd weryfikacji uprawnień administratora:", err);
+    });
+}
 function createStarRating(rating) {
     const container = document.createElement('div');
     container.className = 'star-rating';
@@ -22,7 +32,7 @@ function createComment(author, comment, rating, dateTime, commentAll) {
     const commentDiv = document.createElement('div');
     commentDiv.className = 'comment-card';
     console.log(commentAll)
-    const maybeDelete = (author.user_id === getCurrentUserId()) ? `<button type="button" class="comment-settings" onclick="deleteComment(${commentAll.comment_id})">Usun</button>` : ``
+    const maybeDelete = (author.user_id === getCurrentUserId() || isAdminUser) ? `<button type="button" class="comment-settings" onclick="deleteComment(${commentAll.comment_id})">${author.user_id === getCurrentUserId() ? 'Usuń' : 'Usuń'}</button>` : ``
     commentDiv.innerHTML = `
         <div class="author-image" style="background-image: url('${author.avatar_url}')"></div>
         <div class="comment-content">
@@ -113,7 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 s.classList.toggle('active', 5 - index <= value);
             });
         });
-
+        if (isLoggedIn()) {
+            checkAdminStatus();
+        }
         star.addEventListener('mouseover', (e) => {
             const hoverValue = parseInt(e.target.closest('.rating-star').dataset.value);
             document.querySelectorAll('.rating-star').forEach((s, index) => {
